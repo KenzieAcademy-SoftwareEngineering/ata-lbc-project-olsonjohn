@@ -1,40 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html class="">
 <head>
-    <script type="text/javascript" src="examplePage.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="examplePage.js" type="text/javascript"></script>
+    <link href="css/paper.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" type="text/css">
 </head>
-<body class="background">
-    <header class="header" id="header">
-        <div class="site-title">
-            <a class="header_home" href="index.html">Example App</a>
+<body class="">
+<div class=" paper margin-large container-lg flex-box">
+    <nav class="split-nav flex-box flex-edges">
+        <div class="nav-brand">
+            <h3><a class="header_home" href="index.html">Ticket Tracker</a></h3>
         </div>
-    </header>
-    <div class="card">
-        <h2>Create Example</h2>
-        <form class="card-content" id="create-form">
-            <p class="form-field">
-                <label>Name</label>
-                <input type="text" required class="validated-field" id="create-name-field">
-            </p>
-            <button type="submit">Create</button>
-        </form>
-    </div>
-    <div class="card">
-        <h2>Get By ID</h2>
-        <form class="card-content" id="get-by-id-form">
-            <p class="form-field">
-                <label>ID</label>
-                <input type="text" required class="validated-field" id="id-field">
-            </p>
-            <button type="submit">Get</button>
-        </form>
-    </div>
-    <div class="card" id="result">
-        <h2>Result:</h2>
-        <p id="result-info"></p>
-    </div>
+        <div class="collapsible-body">
+            <ul class="inline">
+                <li><a href="#">Add Customer</a></li>
+            </ul>
+        </div>
+    </nav>
 
+    <div class=" container-lg paper padding-large flex-left row">
+        <div class=" col-3 flex-center  col paper margin-right">
+            <div class="row padding-small flex-center">
+                <div class="card paper">
+                    <h2>Create Example</h2>
+                    <form class="card-content" id="create-form">
+                        <p class="form-field">
+                            <label>Name</label>
+                            <input class="validated-field" id="create-name-field" required type="text">
+                        </p>
+                        <button type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
+            <div class="row padding-small margin-large flex-center">
+                <div class="card paper" id="result">
+                    <h2>Result:</h2>
+                    <p id="result-info"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-8 col flex-center">
+            <div class="row paper flex-center border padding-none shadow-large"
+                 style="background-blend-mode: color-burn; background-color: aliceblue">
+                <h1 class="text-center">Current Tickets</h1>
+            </div>
+
+            <div class="row flex-center">
+                <div class="card padding-small col-8 margin-small ">
+                    <div class="card-header">
+                        New Computer Setup Assistance
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content flex-center">
+                            <p> Hi, I just purchased my first computer, and I'm not sure how to set it up properly. I need assistance with connecting all the cables, configuring the initial settings, and installing essential software like antivirus and web browsers. Any guidance would be greatly appreciated.</p>
+                        </div>
+                    </div>
+                    <div class="card-footer  flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2015
+                        </div>
+                    </div>
+                </div>
+                <div class="card padding-small col-8 margin-small ">
+                    <div class="card-header">
+                        Internet Connection Troubleshooting
+                    </div>
+                    <div class="card-body background-success" >
+                        <div class="card-content flex-center">
+                            <p>I recently got a computer and subscribed to an internet service, but I'm having trouble connecting to the internet. The computer detects the Wi-Fi network, but I can't seem to establish a stable connection. I need help troubleshooting this issue so I can start using the internet on my new computer.</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+                <div class="card padding-small col-8 margin-small ">
+                    <div class="card-header">
+                        Basic Computer Skills Training Request
+                    </div>
+                    <div class="card-body background-warning">
+                        <div class="card-content flex-center">
+                            <p>I'm a complete beginner when it comes to computers. I've just bought my first one, and I'm feeling overwhelmed with how everything works. I'm looking for some basic training on how to use the computer, navigate the operating system, create and manage files, and perform simple tasks like sending emails and browsing the web.</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-8 padding-small margin-small ">
+                    <div class="card-header">
+                        Email Setup Assistance Needed
+                    </div>
+                    <div class="card-body background-danger">
+                        <div class="card-content flex-center">
+                            <p>I just got my first computer and I'm having trouble setting up my email account. I need help configuring my email client, adding my email address, and understanding how to send and receive emails. Any guidance would be appreciated.</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-8 margin-small padding-small ">
+                    <div class="card-header">
+                        Software Installation Inquiry
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content flex-center">
+                            <p>I'm a first-time computer owner and I'm not sure how to install new software on my PC. I need assistance in understanding the process of downloading and installing software applications safely. Can you please guide me through it?</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-8 margin-small padding-small ">
+                    <div class="card-header">
+                        Wi-Fi Connection Problems
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content flex-center">
+                            <p>I've just set up my new computer, but I'm facing issues connecting to my home Wi-Fi network. The network appears in the list, but I can't connect to it. I need help troubleshooting this Wi-Fi connectivity problem.</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-8 margin-small padding-small ">
+                    <div class="card-header">
+                        Data Safety and Backup Query
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content flex-center">
+                            <p>I'm a new computer user and I'm concerned about the safety of my files. How can I ensure that my important documents and photos are backed up and protected from loss? I need guidance on data backup and security best practices.</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-8 margin-small padding-small ">
+                    <div class="card-header">
+                        Printer Setup Help Needed
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content flex-center">
+                            <p>I've purchased my first computer and I want to connect a printer to it. However, I'm not sure how to install the printer drivers and set it up for printing. Can you provide guidance on how to set up my printer on my new computer?</p>
+                        </div>
+                    </div>
+                    <div class="card-footer flex-spaces">
+                        <div class="sub-title flex-right text-right">
+                            created: 01/19/2025
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>
