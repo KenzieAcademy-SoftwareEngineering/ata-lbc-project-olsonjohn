@@ -34,3 +34,4 @@ invoke/*.json
 
 package-lock.json
 yarn.lock
+setupEnvironment.sh
