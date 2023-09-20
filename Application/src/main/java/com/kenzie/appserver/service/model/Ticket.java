@@ -11,15 +11,33 @@ public class Ticket {
     private ZonedDateTime createdAt;
     private ZonedDateTime finishedAt;
     private TicketStatus ticketStatus;
-    private String id;
+    private String ticketId;
 
-    public Ticket(String id, String ticketSubject, String ticketDescription) {
-        this.id = id;
+    public String getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    private Customer customer;
+
+    public Ticket(String ticketId, Customer customer,  String ticketSubject, String ticketDescription) {
+        this.ticketId = ticketId;
         this.ticketSubject = ticketSubject;
         this.ticketDescription = ticketDescription;
         this.ticketStatus = TicketStatus.NEW;
         this.createdAt = ZonedDateTime.now();
-
+        this.customer = customer;
     }
     public String getTicketSubject() {
         return ticketSubject;
@@ -61,13 +79,6 @@ public class Ticket {
         this.ticketStatus = ticketStatus;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -84,6 +95,6 @@ public class Ticket {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketSubject, ticketDescription, createdAt, finishedAt, ticketStatus, id);
+        return Objects.hash(ticketSubject, ticketDescription, createdAt, finishedAt, ticketStatus);
     }
 }
