@@ -90,7 +90,7 @@ public class Ticket {
                 && Objects.equals(createdAt, ticket.createdAt)
                 && Objects.equals(finishedAt, ticket.finishedAt)
                 && ticketStatus == ticket.ticketStatus
-                && Objects.equals(id, ticket.id);
+                && Objects.equals(ticketId, ticket.ticketId);
     }
 
     @Override
