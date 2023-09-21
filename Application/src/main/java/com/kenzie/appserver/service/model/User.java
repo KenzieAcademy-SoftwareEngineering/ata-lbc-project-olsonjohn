@@ -5,15 +5,14 @@ import java.util.Objects;
 public class User {
     private String id;
     private String name;
-    private String userId;
     private String userNumber;
 
-    public User(String id, String userId, String userNumber, String name) {
+    public User(String id, String userNumber, String name) {
         this.id = id;
-        this.userId = userId;
         this.userNumber = userNumber;
         this.name = name;
     }
+
     public String getId() {
         return id;
     }
@@ -30,13 +29,6 @@ public class User {
         this.name = name;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getUserNumber() {
         return userNumber;
@@ -51,14 +43,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id)
-                && Objects.equals(name, user.name)
-                && Objects.equals(userId, user.userId)
-                && Objects.equals(userNumber, user.userNumber);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(userNumber, user.userNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, userId, userNumber);
+        return Objects.hash(id, name, userNumber);
     }
 }
