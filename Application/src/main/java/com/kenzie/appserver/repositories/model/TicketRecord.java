@@ -1,11 +1,12 @@
 package com.kenzie.appserver.repositories.model;
 
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.kenzie.appserver.converter.ZonedDateTimeConverter;
+import com.kenzie.appserver.service.model.User;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "Tickets")
@@ -15,33 +16,42 @@ public class TicketRecord {
     private ZonedDateTime createdAt;
     private ZonedDateTime finishedAt;
     private TicketStatus ticketStatus;
-    private String id;
+    private String ticketId;
+    private String customerId;
+    private List<User> users;
 
-    @DynamoDBAttribute
+//TODO: Add DynamoDB attributes for GSI with CustomerId HashKey for customer ticket history
+
+    @DynamoDBAttribute(attributeName = "subject")
     public String getTicketSubject() {
         return ticketSubject;
     }
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "description")
     public String getTicketDescription() {
         return ticketDescription;
     }
-
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "created")
+    @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "finished")
+    @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
     public ZonedDateTime getFinishedAt() {
         return finishedAt;
     }
-    @DynamoDBAttribute
+    @DynamoDBRangeKey(attributeName = "status")
     public TicketStatus getTicketStatus() {
         return ticketStatus;
     }
-    @DynamoDBHashKey(attributeName = "id")
-    public String getId() {
-        return id;
+    @DynamoDBHashKey(attributeName = "ticketId")
+    public String getTicketId() {
+        return ticketId;
     }
+    @DynamoDBAttribute(attributeName = "customerId")
+    public String getCustomerId() {return customerId;}
+    @DynamoDBAttribute(attributeName = "users")
+    public List<User> getUsers() {return users;}
 
     public void setTicketSubject(String ticketSubject) {
         this.ticketSubject = ticketSubject;
@@ -63,20 +73,24 @@ public class TicketRecord {
         this.ticketStatus = ticketStatus;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
+
+    public void setCustomerId(String customerId) {this.customerId = customerId;}
+
+    public void setUsers(List<User> users) {this.users = users;}
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TicketRecord)) return false;
         TicketRecord that = (TicketRecord) o;
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(getTicketId(), that.getTicketId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(getTicketId());
     }
 }

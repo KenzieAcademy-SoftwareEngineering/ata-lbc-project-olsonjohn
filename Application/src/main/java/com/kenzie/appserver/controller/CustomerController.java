@@ -35,7 +35,7 @@ public class CustomerController {
 
         CustomerResponse customerResponse = new CustomerResponse(customer);
 
-        return ResponseEntity.created((URI.create("/customer/"+ customerResponse.getId()))).body(customerResponse);
+        return ResponseEntity.created(URI.create("/customer/"+ customerResponse.getId())).body(customerResponse);
     }
 }
 

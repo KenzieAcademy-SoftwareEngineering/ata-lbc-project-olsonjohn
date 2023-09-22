@@ -1,9 +1,13 @@
 package com.kenzie.appserver.service.model;
 
+import com.kenzie.appserver.controller.model.TicketCreateRequest;
+import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Ticket {
     private String ticketSubject;
@@ -12,6 +16,67 @@ public class Ticket {
     private ZonedDateTime finishedAt;
     private TicketStatus ticketStatus;
     private String ticketId;
+    private String customerId;
+    private List<User> users;
+
+
+    public Ticket(String ticketId,
+                  String customerId,
+                  String ticketSubject,
+                  String ticketDescription) {
+        this.ticketId = ticketId;
+        this.ticketSubject = ticketSubject;
+        this.ticketDescription = ticketDescription;
+        this.ticketStatus = TicketStatus.NEW;
+        this.createdAt = ZonedDateTime.now();
+        this.customerId = customerId;
+    }
+
+    public Ticket(String ticketId,
+                  String ticketSubject,
+                  String ticketDescription,
+                  TicketStatus ticketStatus,
+                  ZonedDateTime createdAt,
+                  ZonedDateTime finishedAt,
+                  String customerId,
+                  List<User> users) {
+        this.ticketId = ticketId;
+        this.ticketSubject = ticketSubject;
+        this.ticketDescription = ticketDescription;
+        this.ticketStatus = ticketStatus;
+        this.createdAt = createdAt;
+        this.finishedAt = finishedAt;
+        this.customerId = customerId;
+        this.users = users;
+    }
+
+    public Ticket(TicketRecord ticketRecord) {
+        this.ticketId = ticketRecord.getTicketId();
+        this.ticketSubject = ticketRecord.getTicketSubject();
+        this.ticketDescription = ticketRecord.getTicketDescription();
+        this.ticketStatus = ticketRecord.getTicketStatus();
+        this.createdAt = ticketRecord.getCreatedAt();
+        this.finishedAt = ticketRecord.getFinishedAt();
+        this.customerId = ticketRecord.getCustomerId();
+        this.users = ticketRecord.getUsers();
+    }
+
+    public Ticket(TicketCreateRequest ticketCreateRequest) {
+        this.ticketId = UUID.randomUUID().toString();
+        this.ticketSubject = ticketCreateRequest.getTicketSubject();
+        this.ticketDescription = ticketCreateRequest.getTicketDescription();
+        this.createdAt = ZonedDateTime.now();
+        this.customerId = ticketCreateRequest.getCustomerId();
+
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public String getTicketId() {
         return ticketId;
@@ -21,24 +86,14 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerId() {
+        return this.customerId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
-    private Customer customer;
-
-    public Ticket(String ticketId, Customer customer,  String ticketSubject, String ticketDescription) {
-        this.ticketId = ticketId;
-        this.ticketSubject = ticketSubject;
-        this.ticketDescription = ticketDescription;
-        this.ticketStatus = TicketStatus.NEW;
-        this.createdAt = ZonedDateTime.now();
-        this.customer = customer;
-    }
     public String getTicketSubject() {
         return ticketSubject;
     }
@@ -90,11 +145,20 @@ public class Ticket {
                 && Objects.equals(createdAt, ticket.createdAt)
                 && Objects.equals(finishedAt, ticket.finishedAt)
                 && ticketStatus == ticket.ticketStatus
-                && Objects.equals(ticketId, ticket.ticketId);
+                && Objects.equals(ticketId, ticket.ticketId)
+                && Objects.equals(customerId, ticket.customerId)
+                && Objects.equals(users, ticket.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketSubject, ticketDescription, createdAt, finishedAt, ticketStatus);
+        return Objects.hash(ticketSubject,
+                ticketDescription,
+                createdAt,
+                finishedAt,
+                ticketStatus,
+                ticketId,
+                customerId,
+                users);
     }
 }
