@@ -5,6 +5,9 @@ import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.service.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -24,6 +27,14 @@ public class UserService {
         return user;
     }
 
+    public List<User> getAllUsers() {
+        List<User> userList = new ArrayList<>();
+        Iterable<UserRecord> userIterator = userRepository.findAll();
+        for(UserRecord userRecord: userIterator) {
+            userList.add(new User(userRecord.getId(),userRecord.getUserNumber(),userRecord.getName()));
+        }
+        return userList;
+    }
     private UserRecord createUserRecord(User user) {
         UserRecord userRecord = new UserRecord();
         userRecord.setUserNumber(user.getUserNumber());
