@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -52,6 +54,19 @@ public class UserController {
 
 // TODO: Add method to get all Users
 
+    @GetMapping("/all")
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<User> userList = userService.getAllUsers();
+
+        if(userList.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        List<UserResponse> responses = new ArrayList<>();
+        for( User user: userList){
+            responses.add(new UserResponse(user));
+        }
+        return ResponseEntity.ok(responses);
+    }
 
 }
 
