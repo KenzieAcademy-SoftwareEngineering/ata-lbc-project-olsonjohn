@@ -1,6 +1,10 @@
 package com.kenzie.appserver.service.model;
 
+import com.kenzie.appserver.controller.model.CustomerCreateRequest;
+import com.kenzie.appserver.repositories.model.CustomerRecord;
+
 import java.util.Objects;
+import java.util.UUID;
 
 public class Customer {
     private String id;
@@ -23,6 +27,29 @@ public class Customer {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
     }
+
+    public Customer(CustomerRecord customerRecord) {
+        this.id = customerRecord.getId();
+        this.firstName = customerRecord.getFirstName();
+        this.lastName = customerRecord.getLastName();
+        this.address = customerRecord.getAddress();
+        this.emailAddress = customerRecord.getEmailAddress();
+        this.phoneNumber = customerRecord.getPhoneNumber();
+    }
+
+    public Customer(CustomerCreateRequest customerCreateRequest) {
+        this.id = UUID.randomUUID().toString();
+        this.firstName = customerCreateRequest.getFirstName();
+        this.lastName = customerCreateRequest.getLastName();
+        this.address = customerCreateRequest.getAddress();
+        this.emailAddress = customerCreateRequest.getEmailAddress();
+        this.phoneNumber = customerCreateRequest.getPhoneNumber();
+    }
+
+    public Customer() {
+
+    }
+
     public String getId() {
         return id;
     }

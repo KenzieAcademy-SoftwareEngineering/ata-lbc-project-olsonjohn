@@ -1,44 +1,59 @@
-package com.kenzie.appserver.repositories.model;
+package com.kenzie.appserver.controller.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kenzie.appserver.service.model.Customer;
 
-import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
 
+public class CustomerResponse {
 
-@DynamoDBTable(tableName = "Customers")
-public class CustomerRecord {
+    @NotEmpty
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("firstName")
     private String firstName;
+    @JsonProperty("lastName")
     private String lastName;
+    @JsonProperty("address")
     private String address;
+    @JsonProperty("emailAddress")
     private String emailAddress;
+    @JsonProperty("phoneNumber")
     private String phoneNumber;
 
 
-    @DynamoDBHashKey(attributeName = "id")
+    public CustomerResponse(){
+
+    }
+    public CustomerResponse(Customer customer) {
+        this.id = customer.getId();
+        this.lastName = customer.getLastName();
+        this.firstName = customer.getFirstName();
+        this.address = customer.getAddress();
+        this.emailAddress = customer.getEmailAddress();
+        this.phoneNumber = customer.getPhoneNumber();
+    }
+
     public String getId() {
         return id;
     }
 
-    @DynamoDBAttribute(attributeName = "firstName")
     public String getFirstName() {
         return firstName;
     }
-    @DynamoDBAttribute(attributeName = "lastName")
+
     public String getLastName() {
         return lastName;
     }
-    @DynamoDBAttribute(attributeName = "address")
+
     public String getAddress() {
         return address;
     }
-    @DynamoDBAttribute(attributeName = "emailAddress")
+
     public String getEmailAddress() {
         return emailAddress;
     }
-    @DynamoDBAttribute(attributeName = "phoneNumber")
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -65,18 +80,5 @@ public class CustomerRecord {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomerRecord)) return false;
-        CustomerRecord that = (CustomerRecord) o;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 }
