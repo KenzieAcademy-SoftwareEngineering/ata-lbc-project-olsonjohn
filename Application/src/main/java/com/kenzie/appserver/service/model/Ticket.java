@@ -1,6 +1,7 @@
 package com.kenzie.appserver.service.model;
 
 import com.kenzie.appserver.controller.model.TicketCreateRequest;
+import com.kenzie.appserver.controller.model.TicketUpdateRequest;
 import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 
@@ -68,6 +69,13 @@ public class Ticket {
         this.createdAt = ZonedDateTime.now();
         this.customerId = ticketCreateRequest.getCustomerId();
 
+    }
+
+    public Ticket(TicketUpdateRequest ticketUpdateRequest) {
+        this.ticketDescription = ticketUpdateRequest.getTicketDescription();
+        this.users = ticketUpdateRequest.getUsers();
+        this.ticketStatus = ticketUpdateRequest.getTicketStatus();
+        this.finishedAt = ticketUpdateRequest.getFinishedAt();
     }
 
     public List<User> getUsers() {

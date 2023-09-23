@@ -2,6 +2,8 @@ package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.controller.model.TicketCreateRequest;
 import com.kenzie.appserver.controller.model.TicketResponse;
+import com.kenzie.appserver.controller.model.TicketUpdateRequest;
+import com.kenzie.appserver.repositories.model.TicketStatus;
 import com.kenzie.appserver.service.TicketService;
 import com.kenzie.appserver.service.model.Ticket;
 import org.springframework.http.ResponseEntity;
@@ -29,18 +31,14 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketResponse> getTicket(@PathVariable("id")String id) {
-        Ticket ticket = ticketService.findByTicketId(id);
+    public ResponseEntity<TicketResponse> getTicket(@PathVariable("id")String ticketId) {
+        Ticket ticket = ticketService.findByTicketId(ticketId);
         if (ticket == null) {
             return ResponseEntity.notFound().build();
         }
         TicketResponse ticketResponse = new TicketResponse(ticket);
         return ResponseEntity.ok(ticketResponse);
     }
-
-    //TODO: Add GET ALL customer tickets by customer id after I make GSI sorted by customer id
-
-    //TODO: UPDATE ticket method
 
     @GetMapping("/all")
     public ResponseEntity<List<TicketResponse>> getAllTickets() {
@@ -49,5 +47,34 @@ public class TicketController {
         List<TicketResponse> responses = tickets.stream().map(TicketResponse::new).collect(Collectors.toList());
 
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<TicketResponse>> getTicketsForCustomerId(@PathVariable("customerId")String customerId) {
+        List<Ticket> tickets = ticketService.findTicketsForCustomerId(customerId);
+
+        List<TicketResponse> responses = tickets.stream().map(TicketResponse::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
+        Ticket updateTicket = ticketService.findByTicketId(ticketId);
+
+        updateTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
+        updateTicket.setUsers(ticketUpdateRequest.getUsers());
+        updateTicket.setTicketStatus(ticketUpdateRequest.getTicketStatus());
+        if (ticketUpdateRequest.getTicketStatus().equals(TicketStatus.COMPLETED)) {
+            updateTicket.setFinishedAt(ticketUpdateRequest.getFinishedAt());
+        }
+        TicketResponse ticketResponse = new TicketResponse(updateTicket);
+        return ResponseEntity.ok(ticketResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTicket(@PathVariable("id")String ticketId) {
+        ticketService.deleteTicket(ticketId);
+        return ResponseEntity.ok("Ticket deleted successfully.");
     }
 }

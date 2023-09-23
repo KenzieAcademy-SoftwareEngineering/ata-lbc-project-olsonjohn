@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @DynamoDBTable(tableName = "Tickets")
 public class TicketRecord {
+    public static final String TICKETS_INDEX = "TicketsIndex";
     private String ticketSubject;
     private String ticketDescription;
     private ZonedDateTime createdAt;
@@ -49,6 +50,7 @@ public class TicketRecord {
         return ticketId;
     }
     @DynamoDBAttribute(attributeName = "customerId")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName =TICKETS_INDEX, attributeName = "customerId")
     public String getCustomerId() {return customerId;}
     @DynamoDBAttribute(attributeName = "users")
     public List<User> getUsers() {return users;}

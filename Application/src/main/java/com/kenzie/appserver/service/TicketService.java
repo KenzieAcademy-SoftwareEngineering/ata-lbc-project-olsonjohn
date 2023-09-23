@@ -1,10 +1,12 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.repositories.TicketRepository;
 import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.service.model.Ticket;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TicketService {
@@ -20,6 +22,13 @@ public class TicketService {
         return ticket;
     }
 
+    public void deleteTicket(String ticketId) {
+        TicketRecord ticketRecord = ticketRepository
+                .findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket does not exist with id: " + ticketId));
+        ticketRepository.deleteById(ticketId);
+    }
+
     public Ticket findByTicketId(String ticketId) {
         Ticket ticket = ticketRepository
                 .findById(ticketId)
@@ -32,18 +41,30 @@ public class TicketService {
                         ticketRecord.getFinishedAt(),
                         ticketRecord.getCustomerId(),
                         ticketRecord.getUsers()))
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket does not exist with id: " + ticketId));
         return ticket;
     }
-
-    //TODO: create method to Find ALL tickets for a customer id using the GSI
-
-    //TODO: UPDATE ticket method
 
     public List<Ticket> findAll() {
         List<Ticket> tickets = new ArrayList<>();
         ticketRepository
                 .findAll()
+                .forEach(ticket -> tickets.add(new Ticket(
+                        ticket.getTicketId(),
+                        ticket.getTicketSubject(),
+                        ticket.getTicketDescription(),
+                        ticket.getTicketStatus(),
+                        ticket.getCreatedAt(),
+                        ticket.getFinishedAt(),
+                        ticket.getCustomerId(),
+                        ticket.getUsers())));
+        return tickets;
+    }
+
+    public List<Ticket> findTicketsForCustomerId(String customerId) {
+        List<Ticket> tickets = new ArrayList<>();
+        ticketRepository
+                .findAllById(Collections.singleton(customerId))
                 .forEach(ticket -> tickets.add(new Ticket(
                         ticket.getTicketId(),
                         ticket.getTicketSubject(),
