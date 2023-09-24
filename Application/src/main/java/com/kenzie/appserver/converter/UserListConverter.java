@@ -1,6 +1,7 @@
 package com.kenzie.appserver.converter;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
+import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.service.UserService;
 import com.kenzie.appserver.service.model.User;
 
@@ -10,10 +11,11 @@ import java.util.List;
 
 public class UserListConverter implements DynamoDBTypeConverter<String, List<User>> {
 
-    private UserService userService;
-
     @Override
     public String convert(List<User> userList) {
+        if (userList.isEmpty()) {
+            return "[]";
+        }
         ArrayList<String> output = new ArrayList<>();
         userList.forEach(user -> output.add(user.getId()));
         return Arrays.toString(output.toArray());
@@ -21,10 +23,13 @@ public class UserListConverter implements DynamoDBTypeConverter<String, List<Use
 
     @Override
     public List<User> unconvert(String object) {
-        String[] tempList = object.split(",");
+        if(object.equals("[]")) {
+            return new ArrayList<>();
+        }
+        String[] tempList = object.replaceAll("\\[","").replaceAll("\\]","").split(",");
         ArrayList userIdList = new ArrayList<>(Arrays.asList(tempList));
         ArrayList<User> output = new ArrayList<>();
-        userIdList.forEach(userId -> output.add(userService.findById((String) userId)));
+        userIdList.forEach(userId -> output.add(new User(userId.toString())));
         return output;
     }
 }

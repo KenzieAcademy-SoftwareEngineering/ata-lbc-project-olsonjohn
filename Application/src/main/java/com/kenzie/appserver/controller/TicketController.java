@@ -3,6 +3,7 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.TicketCreateRequest;
 import com.kenzie.appserver.controller.model.TicketResponse;
 import com.kenzie.appserver.controller.model.TicketUpdateRequest;
+import com.kenzie.appserver.converter.UserListConverter;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 import com.kenzie.appserver.service.TicketService;
 import com.kenzie.appserver.service.model.Ticket;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,8 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<TicketResponse> addNewTicket(@RequestBody TicketCreateRequest ticketCreateRequest) {
         Ticket ticket = new Ticket(ticketCreateRequest);
+        ticket.setUsers(new ArrayList<>());
+        ticket.setTicketStatus(TicketStatus.NEW);
         ticketService.createTicket(ticket);
 
         TicketResponse ticketResponse = new TicketResponse(ticket);
@@ -49,7 +54,7 @@ public class TicketController {
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("by-customer/{customerId}")
     public ResponseEntity<List<TicketResponse>> getTicketsForCustomerId(@PathVariable("customerId")String customerId) {
         List<Ticket> tickets = ticketService.findTicketsForCustomerId(customerId);
 
@@ -60,14 +65,16 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
+        UserListConverter userListConverter = new UserListConverter();
         Ticket updateTicket = ticketService.findByTicketId(ticketId);
-
         updateTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
         updateTicket.setUsers(ticketUpdateRequest.getUsers());
         updateTicket.setTicketStatus(ticketUpdateRequest.getTicketStatus());
         if (ticketUpdateRequest.getTicketStatus().equals(TicketStatus.COMPLETED)) {
-            updateTicket.setFinishedAt(ticketUpdateRequest.getFinishedAt());
+            ZonedDateTime now = ZonedDateTime.now();
+            updateTicket.setFinishedAt(now);
         }
+        ticketService.updateTicket(updateTicket);
         TicketResponse ticketResponse = new TicketResponse(updateTicket);
         return ResponseEntity.ok(ticketResponse);
     }

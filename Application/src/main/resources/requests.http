@@ -162,8 +162,25 @@ POST http://localhost:5001/ticket
 Content-Type: application/json
 
 {
+  "subject" : "Thistest1234123",
+  "description": "testing123 testing",
+  "customerId": "30e8f8bb-9866-49c3-ab67-5ad2d956c248"
+}
+
+
+
+###
+
+GET http://localhost:5001/ticket/0a2c5934-3d7d-4967-b92e-11298e69929a
+
+###
+PUT http://localhost:5001/ticket/0a2c5934-3d7d-4967-b92e-11298e69929a
+Content-Type: application/json
+
+{
   "subject" : "test",
   "description": "testing123 testing",
   "customerId": "30e8f8bb-9866-49c3-ab67-5ad2d956c248",
-  "users":["7b4da2cf-dd2f-425f-a8a8-d3a583e608fe"]
+  "users":["5bf2a15f-8f55-42dc-b438-4e06f0f37847", "bceb60a8-072c-4305-822b-d4befc3c6dde"],
+  "status": "COMPLETED"
 }

@@ -2,6 +2,7 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.repositories.TicketRepository;
+import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.service.model.Ticket;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class TicketService {
     private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
-    public TicketService(TicketRepository ticketRepository) {
+    public TicketService(TicketRepository ticketRepository, UserRepository userRepository) {
         this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
     }
 
     public Ticket createTicket(Ticket ticket) {
@@ -91,4 +94,22 @@ public class TicketService {
         ticketRecord.setUsers(ticket.getUsers());
         return ticketRecord;
     }
+
+    public void updateTicket(Ticket updateTicket){
+       Ticket ticket = this.findByTicketId(updateTicket.getTicketId());
+       ticket.setUsers(updateTicket.getUsers());
+       ticket.setTicketStatus(updateTicket.getTicketStatus());
+       if (updateTicket.getFinishedAt() != null) {
+           ticket.setFinishedAt(updateTicket.getFinishedAt());
+       }
+       if (updateTicket.getTicketSubject() != null){
+           ticket.setTicketSubject(updateTicket.getTicketSubject());
+       }
+        if (updateTicket.getTicketDescription() != null){
+            ticket.setTicketDescription(updateTicket.getTicketDescription());
+        }
+
+        ticketRepository.save(createTicketRecord(ticket));
+    }
+
 }
