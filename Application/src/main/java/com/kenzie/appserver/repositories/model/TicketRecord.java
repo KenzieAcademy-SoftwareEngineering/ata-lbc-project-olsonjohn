@@ -2,14 +2,17 @@ package com.kenzie.appserver.repositories.model;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.kenzie.appserver.converter.UserListConverter;
 import com.kenzie.appserver.converter.ZonedDateTimeConverter;
 import com.kenzie.appserver.service.model.User;
+import org.springframework.data.annotation.Id;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "Tickets")
+
 public class TicketRecord {
     public static final String TICKETS_INDEX = "TicketsIndex";
     private String ticketSubject;
@@ -17,6 +20,7 @@ public class TicketRecord {
     private ZonedDateTime createdAt;
     private ZonedDateTime finishedAt;
     private TicketStatus ticketStatus;
+    @Id
     private String ticketId;
     private String customerId;
     private List<User> users;
@@ -31,17 +35,19 @@ public class TicketRecord {
     public String getTicketDescription() {
         return ticketDescription;
     }
-    @DynamoDBAttribute(attributeName = "created")
     @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
+    @DynamoDBAttribute(attributeName = "created")
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
-    @DynamoDBAttribute(attributeName = "finished")
     @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
+    @DynamoDBAttribute(attributeName = "finished")
     public ZonedDateTime getFinishedAt() {
         return finishedAt;
     }
-    @DynamoDBRangeKey(attributeName = "status")
+    //@DynamoDBRangeKey(attributeName = "status")
+    @DynamoDBAttribute(attributeName = "ticketStatus")
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.S)
     public TicketStatus getTicketStatus() {
         return ticketStatus;
     }
@@ -53,6 +59,7 @@ public class TicketRecord {
     @DynamoDBIndexHashKey(globalSecondaryIndexName =TICKETS_INDEX, attributeName = "customerId")
     public String getCustomerId() {return customerId;}
     @DynamoDBAttribute(attributeName = "users")
+    @DynamoDBTypeConverted(converter = UserListConverter.class)
     public List<User> getUsers() {return users;}
 
     public void setTicketSubject(String ticketSubject) {

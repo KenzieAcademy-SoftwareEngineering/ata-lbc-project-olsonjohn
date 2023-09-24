@@ -4,11 +4,13 @@ import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.repositories.TicketRepository;
 import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.service.model.Ticket;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class TicketService {
     private final TicketRepository ticketRepository;
 

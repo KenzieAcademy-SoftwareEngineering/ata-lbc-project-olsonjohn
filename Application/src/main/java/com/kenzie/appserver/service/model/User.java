@@ -1,7 +1,9 @@
 package com.kenzie.appserver.service.model;
 
-import java.util.Objects;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
+import java.util.Objects;
+@DynamoDBDocument
 public class User {
     private String id;
     private String name;
