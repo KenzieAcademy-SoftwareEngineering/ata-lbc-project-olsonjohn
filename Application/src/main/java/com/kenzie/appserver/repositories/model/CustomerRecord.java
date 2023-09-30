@@ -21,7 +21,6 @@ public class CustomerRecord {
     public String getId() {
         return id;
     }
-
     @DynamoDBAttribute(attributeName = "firstName")
     public String getFirstName() {
         return firstName;
