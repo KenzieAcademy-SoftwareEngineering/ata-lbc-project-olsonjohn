@@ -2,9 +2,7 @@ package com.kenzie.appserver.repositories.model;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.kenzie.appserver.converter.UserListConverter;
 import com.kenzie.appserver.converter.ZonedDateTimeConverter;
-import com.kenzie.appserver.service.model.User;
 import org.springframework.data.annotation.Id;
 
 import java.time.ZonedDateTime;
@@ -23,9 +21,8 @@ public class TicketRecord {
     @Id
     private String ticketId;
     private String customerId;
-    private List<User> users;
+    private List<String> users;
 
-//TODO: Add DynamoDB attributes for GSI with CustomerId HashKey for customer ticket history
 
     @DynamoDBAttribute(attributeName = "subject")
     public String getTicketSubject() {
@@ -59,8 +56,8 @@ public class TicketRecord {
     @DynamoDBIndexHashKey(globalSecondaryIndexName =TICKETS_INDEX, attributeName = "customerId")
     public String getCustomerId() {return customerId;}
     @DynamoDBAttribute(attributeName = "users")
-    @DynamoDBTypeConverted(converter = UserListConverter.class)
-    public List<User> getUsers() {return users;}
+    //@DynamoDBTypeConverted(converter = UserListConverter.class)
+    public List<String> getUsers() {return users;}
 
     public void setTicketSubject(String ticketSubject) {
         this.ticketSubject = ticketSubject;
@@ -88,7 +85,7 @@ public class TicketRecord {
 
     public void setCustomerId(String customerId) {this.customerId = customerId;}
 
-    public void setUsers(List<User> users) {this.users = users;}
+    public void setUsers(List<String> users) {this.users = users;}
 
     @Override
     public boolean equals(Object o) {

@@ -19,7 +19,7 @@ public class Ticket {
     private TicketStatus ticketStatus;
     private String ticketId;
     private String customerId;
-    private List<User> users;
+    private List<String> users;
 
 
     public Ticket(String ticketId,
@@ -41,7 +41,7 @@ public class Ticket {
                   ZonedDateTime createdAt,
                   ZonedDateTime finishedAt,
                   String customerId,
-                  List<User> users) {
+                  List<String> users) {
         this.ticketId = ticketId;
         this.ticketSubject = ticketSubject;
         this.ticketDescription = ticketDescription;
@@ -80,11 +80,11 @@ public class Ticket {
     }
 
     @JsonProperty("users")
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 

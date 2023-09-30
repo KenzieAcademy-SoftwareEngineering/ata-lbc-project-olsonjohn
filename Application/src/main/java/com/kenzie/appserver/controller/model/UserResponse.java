@@ -14,8 +14,8 @@ public class UserResponse {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("id")
-    private String id;
+    @JsonProperty("userId")
+    private String userId;
 
 
     public UserResponse() {
@@ -23,7 +23,7 @@ public class UserResponse {
     }
 
     public UserResponse(User user) {
-        this.id = user.getId();
+        this.userId = user.getUserId();
         this.userNumber = user.getUserNumber();
         this.name = user.getName();
     }
@@ -44,11 +44,11 @@ public class UserResponse {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String id) {
+        this.userId = userId;
     }
 }

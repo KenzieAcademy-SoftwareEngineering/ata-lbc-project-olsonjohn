@@ -1,7 +1,6 @@
 package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kenzie.appserver.converter.UserListConverter;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 import com.kenzie.appserver.service.model.User;
 
@@ -17,19 +16,19 @@ public class TicketUpdateRequest {
     private String ticketDescription;
     @JsonProperty("finished")
     private ZonedDateTime finishedAt;
-
-    private List<User> users;
-
     @JsonProperty("users")
-    public void deserializeUsers(String[] user) {
-        UserListConverter ulc = new UserListConverter();
-        ArrayList aList = new ArrayList<>();
-        for(String u: user) {
-            aList.add(u);
-        }
-        List<User> userList = ulc.unconvert(Arrays.toString(user));
-        this.users =  userList;
-    }
+    private List<String> users;
+
+
+//    public void deserializeUsers(String[] user) {
+//        UserListConverter ulc = new UserListConverter();
+//        ArrayList aList = new ArrayList<>();
+//        for(String u: user) {
+//            aList.add(u);
+//        }
+//        List<User> userList = ulc.unconvert(Arrays.toString(user));
+//        this.users =  userList;
+//    }
 
     public TicketStatus getTicketStatus() {
         return ticketStatus;
@@ -55,11 +54,11 @@ public class TicketUpdateRequest {
         this.finishedAt = finishedAt;
     }
 
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 }

@@ -3,7 +3,6 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.TicketCreateRequest;
 import com.kenzie.appserver.controller.model.TicketResponse;
 import com.kenzie.appserver.controller.model.TicketUpdateRequest;
-import com.kenzie.appserver.converter.UserListConverter;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 import com.kenzie.appserver.service.TicketService;
 import com.kenzie.appserver.service.model.Ticket;
@@ -65,17 +64,16 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
-        UserListConverter userListConverter = new UserListConverter();
-        Ticket updateTicket = ticketService.findByTicketId(ticketId);
-        updateTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
-        updateTicket.setUsers(ticketUpdateRequest.getUsers());
-        updateTicket.setTicketStatus(ticketUpdateRequest.getTicketStatus());
+        //UserListConverter userListConverter = new UserListConverter();
+        Ticket updatedTicket = ticketService.findByTicketId(ticketId);
+        updatedTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
+        updatedTicket.setUsers(ticketUpdateRequest.getUsers());
+        updatedTicket.setTicketStatus(ticketUpdateRequest.getTicketStatus());
         if (ticketUpdateRequest.getTicketStatus().equals(TicketStatus.COMPLETED)) {
-            ZonedDateTime now = ZonedDateTime.now();
-            updateTicket.setFinishedAt(now);
+            updatedTicket.setFinishedAt(ZonedDateTime.now());
         }
-        ticketService.updateTicket(updateTicket);
-        TicketResponse ticketResponse = new TicketResponse(updateTicket);
+        ticketService.updateTicket(updatedTicket);
+        TicketResponse ticketResponse = new TicketResponse(updatedTicket);
         return ResponseEntity.ok(ticketResponse);
     }
 

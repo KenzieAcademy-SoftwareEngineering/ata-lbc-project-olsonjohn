@@ -26,7 +26,7 @@ public class TicketResponse {
     @JsonProperty("customerId")
     private String customerId;
     @JsonProperty("users")
-    private List<User> users;
+    private List<String> users;
 
     public TicketResponse(Ticket ticket) {
         this.ticketId = ticket.getTicketId();
@@ -95,11 +95,11 @@ public class TicketResponse {
         this.customerId = customerId;
     }
 
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 }

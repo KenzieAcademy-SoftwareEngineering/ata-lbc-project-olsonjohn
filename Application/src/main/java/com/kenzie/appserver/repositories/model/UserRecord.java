@@ -9,19 +9,9 @@ import java.util.Objects;
 
 @DynamoDBTable(tableName = "Users")
 public class UserRecord {
-    private String id;
     private String name;
     private String userId;
     private String userNumber;
-
-    @DynamoDBHashKey(attributeName = "id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     @DynamoDBAttribute(attributeName = "name")
     public String getName() {
@@ -32,7 +22,7 @@ public class UserRecord {
         this.name = name;
     }
 
-    @DynamoDBAttribute(attributeName = "userId")
+    @DynamoDBHashKey(attributeName = "userId")
     public String getUserId() {
         return userId;
     }
@@ -55,11 +45,11 @@ public class UserRecord {
         if (this == o) return true;
         if (!(o instanceof UserRecord)) return false;
         UserRecord that = (UserRecord) o;
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(getUserId(), that.getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(getUserId());
     }
 }

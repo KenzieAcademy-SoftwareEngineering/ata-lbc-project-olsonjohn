@@ -35,7 +35,7 @@ public class TicketService {
     }
 
     public Ticket findByTicketId(String ticketId) {
-        Ticket ticket = ticketRepository
+        return ticketRepository
                 .findById(ticketId)
                 .map(ticketRecord -> new Ticket(
                         ticketRecord.getTicketId(),
@@ -47,7 +47,6 @@ public class TicketService {
                         ticketRecord.getCustomerId(),
                         ticketRecord.getUsers()))
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket does not exist with id: " + ticketId));
-        return ticket;
     }
 
     public List<Ticket> findAll() {
