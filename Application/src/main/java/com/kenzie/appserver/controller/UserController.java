@@ -15,6 +15,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
+
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/user")
 public class UserController {
