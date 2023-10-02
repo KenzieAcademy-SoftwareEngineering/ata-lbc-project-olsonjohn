@@ -46,6 +46,7 @@ const App = (props) => {
                 sm: 2,
                 md: 3,
               },
+                marginTop:"calc(5px +var(--Header-height))",
               flex: 1,
               display: "flex",
               flexDirection: "column",
@@ -54,44 +55,7 @@ const App = (props) => {
               gap: 1,
             }}
           >
-            <Sheet
-            
-              sx={{ margin:"10px", padding:"10px", display: "flex", justifyContent: "center", alignItems:"center" }}
-            >
 
-              <Typography color="primary" level="h1" width={"80%"} textAlign={"center"} boxShadow={true}>
-                Ticket Tracker
-              </Typography>
-              <Divider vertical />
-              <ButtonGroup
-                color="success"
-                disabled={false}
-                orientation="vertical"
-                size="lg"
-                spacing={2}
-                variant="soft"
-              >
-
-                <CssVarsProvider theme={theme}>
-                 <Button
-      variant="outlined"
-      color="neutral">
-                  <Typography level="body-md">Light | Dark</Typography>
-    </Button>
-    </CssVarsProvider>
-                <Button
-                  color="danger"
-                  size="lg"
-                  sz={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography level="body-md">Login</Typography>
-                </Button>
-              </ButtonGroup>
-            </Sheet>
             <Divider />
             <Outlet />
           </Box>

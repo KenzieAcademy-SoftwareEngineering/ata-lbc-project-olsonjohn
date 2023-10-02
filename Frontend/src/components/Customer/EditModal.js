@@ -20,9 +20,14 @@ function EditModal() {
                 aria-describedby="modal-desc"
                 open={open}
                 onClose={() => setOpen(false)}
-                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius:"30px"}}
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}
             >
-                <Sheet size='md' sx={{padding:"15px"}} >
+                <Sheet size='md' sx={(theme) => ({
+                    boxShadow: theme.shadow.md,
+                    '--joy-shadowChannel': theme.vars.palette.warning.mainChannel,
+                    '--joy-shadowRing': 'inset 0 -3px 0 rgba(0 0 0 / 0.24)',
+                    padding:"20px"
+                })} >
                 <CustomerForm />
 
                 </Sheet>

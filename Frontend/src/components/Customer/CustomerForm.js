@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Button from '@mui/joy/Button';
 import Container from '@mui/joy/Container';
 import Grid from '@mui/joy/Grid';
-import {Divider, FormLabel, Input} from "@mui/joy";
+import {ButtonGroup, Divider, FormLabel, Input} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
-
+import {Form} from "react-router-dom";
 
 function CustomerForm() {
   const [open, setOpen] = React.useState(false);
@@ -32,10 +32,11 @@ function CustomerForm() {
 
   return (
       <>
-      <Typography label="h1" sx={{textAlign:"center"}} >Edit Customer Form</Typography>
+    <Container maxWidth="sm" sx={{display:"flex", flexDirection:"column", gap:"4px"}}  >
+
+        <Typography label="h1" color="primary" sx={{textAlign:"center", border:"10px", padding:"5px"}} >Edit Customer Form</Typography>
       <Divider role="presentation"/>
-    <Container maxWidth="sm" sx={{borderRaidus:"30px"}}>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <FormLabel>First Name</FormLabel>
@@ -142,15 +143,24 @@ function CustomerForm() {
               onChange={handleChange}
               required
             />
-          </Grid>
-          <Grid item xs={12}>
+          </Grid> <Grid item xs={6}>
 
+          <Button type="cancel" variant="soft" color="danger">
+            Delete
+          </Button>
+        </Grid>
+          <Grid item xs={6}>
+            <ButtonGroup spacing="2em" buttonFlex="0 1 200px">
+            <Button type="submit" variant="outlined" color="warning">
+              Cancel
+            </Button>
             <Button type="submit" variant="outlined" color="primary">
               Submit
             </Button>
+            </ButtonGroup>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     </Container>
     </>
   );

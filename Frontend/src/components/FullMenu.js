@@ -23,9 +23,10 @@ function FullMenu() {
       <Box
         className="FullMenu-overlay"
         sx={{
+          marginTop:"calc(12px +var(--Header-height))",
           position: "fixed",
           zIndex: 9998,
-          top: 0,
+            top: "calc(12px +var(--Header-height))",
           left: 0,
           width: "100vw",
           height: "100vh",
@@ -54,7 +55,7 @@ function FullMenu() {
           transition: "transform 0.4s",
           zIndex: 9999,
           height: "100dvh",
-          top: 0,
+            top: "calc(5px +var(--Header-height))",
           p: 2,
           flexShrink: 0,
           display: "flex",

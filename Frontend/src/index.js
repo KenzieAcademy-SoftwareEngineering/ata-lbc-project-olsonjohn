@@ -59,7 +59,6 @@ const root = createRoot(app);
 
 root.render(
   <StyledEngineProvider injectFirst>
-
     <RouterProvider
       router={router}
       fallbackElement={<ErrorPage/>}

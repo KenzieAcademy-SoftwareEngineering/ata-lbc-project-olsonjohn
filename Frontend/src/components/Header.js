@@ -4,6 +4,7 @@ import Sheet from "@mui/joy/Sheet";
 import IconButton from '@mui/material/IconButton';
 import { toggleMenu } from "../util/menuUtils";
 import { ReceiptLong } from "@mui/icons-material";
+import {Button, ButtonGroup, CssVarsProvider, Divider, Typography} from "@mui/joy";
 
 
 function Header() {
@@ -11,7 +12,7 @@ function Header() {
     <>
       <Sheet
         sx={{
-          display: { xs: "flex", md: "none" },
+          display: { xs: "flex",},
           alignItems: "center",
           justifyContent: "space-between",
           position: "fixed",
@@ -28,10 +29,7 @@ function Header() {
       ><GlobalStyles
       styles={(theme) => ({
         ':root': {
-          '--Header-height': '52px',
-          [theme.breakpoints.up('md')]: {
-            '--Header-height': '0px',
-          },
+          '--Header-height': '65px',
         },
       })}
     />
@@ -40,6 +38,40 @@ function Header() {
         >
         <ReceiptLong />
         </IconButton>
+          <Divider orientation="vertical" />
+          <Typography color="primary" level="h1" width={"80%"} textAlign={"center"} boxShadow={true}>
+              Ticket Tracker
+          </Typography>
+
+          <Divider orientation="vertical" />
+          <ButtonGroup
+              color="success"
+              disabled={false}
+              orientation="horizontal"
+              size="lg"
+              spacing={2}
+              variant="soft"
+          >
+                  <Button
+                      variant="outlined"
+                      color="neutral" sx={(theme) => ({
+                      boxShadow: theme.shadow.md,
+                      '--joy-shadowChannel': theme.vars.palette.primary.mainChannel,
+                      '--joy-shadowRing': 'inset 0 -3px 0 rgba(0 0 0 / 0.24)',
+                  })}>
+                      <Typography level="body-sm">Light | Dark</Typography>
+                  </Button>
+              <Button
+                  color="danger"
+                  size="lg"
+                  sx={(theme) => ({
+                      boxShadow: theme.shadow.md,
+                      '--joy-shadowChannel': theme.vars.palette.danger.mainChannel,
+                      '--joy-shadowRing': 'inset 0 -3px 0 rgba(0 0 0 / 0.24)',
+                  })} >
+                  <Typography level="body-sm">Login</Typography>
+              </Button>
+          </ButtonGroup>
       </Sheet>
     </>
   );

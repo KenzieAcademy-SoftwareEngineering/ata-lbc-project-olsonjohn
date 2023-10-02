@@ -21,7 +21,7 @@ function CustomerCard({ customer }) {
 
         <EditModal />
         </Box>
-        <ListDivider />
+        <ListDivider  />
         <Typography color="textSecondary">
           <strong>Address:</strong> {streetAddress}, {city}, {state} {zip}
         </Typography>

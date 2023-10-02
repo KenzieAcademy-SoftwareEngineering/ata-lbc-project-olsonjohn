@@ -1,31 +1,42 @@
-import {Box, CardContent, ListDivider} from "@mui/joy";
+import {Box, CardContent, Divider, ListDivider} from "@mui/joy";
 import React from "react";
 import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
+import EditModal from "./Customer/EditModal";
+import Avatar from "@mui/joy/Avatar";
 
 
 function UserCard(user) {
-const { id, name,userNumber } = user.user
+    const {id, name, userNumber} = user.user
     return (
         <>
-        <Card variant="outlined" sx={{display:"flex", minWidth:"360px",maxWidth:"460px" }} >
-            <CardContent sx={{display:"flex", justifyContent:"space-around", flexDirection:"row", flexShrink:"0"}}>
-                <Typography level="h3">{name} </Typography>
+            <Card variant="soft" sx={{display: "flex", minWidth: "360px", maxWidth: "460px"}}>
+                <CardContent>
+                    <Box sx={{display: "flex", justifyContent: "space-between", alignContent: "center"}}>
+                        <Typography color='primary' variant='h1' component="div" sx={{bgcolor: "inherit"}}>
+                            {name}
+                        </Typography>
 
-                <Typography level="h4">{userNumber}</Typography>
-            </CardContent>
-            <CardContent >
-            <ListDivider  />
-                <Typography level="body-lg">User Number: {userNumber}</Typography>
-            </CardContent>
-            <ListDivider />
+                        <EditModal/>
+                    </Box>
+                        <ListDivider/>
+                    <Box sx={{display:"flex", alignContent:"center",justifyContent:"space-evenly", margin:"5px", padding:"10px"}} >
+                    <Avatar src="https://placekitten.com/200/300" size="lg"/>
+                    <Divider orientation="vertical"/>
+                    <Typography color="textSecondary">
+                        <strong>Number:</strong> {userNumber}
+                    </Typography>
+                    </Box>
 
-            <Box xs={{marginTop:"5px",flexGrow:1}}>
-                <Typography color="neutral" sx={{size:"20px", justifyItems:"center", textAlign:"right"}}>
-                    {id}
-                </Typography>
-            </Box>
-        </Card>
+                    <ListDivider/>
+
+                    <Box xs={{marginTop: "5px", flexGrow: 1}}>
+                        <Typography color="neutral" sx={{size: "20px", justifyItems: "center", textAlign: "right"}}>
+                            {id}
+                        </Typography>
+                    </Box>
+                </CardContent>
+            </Card>
         </>
     )
 }
