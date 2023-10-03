@@ -13,6 +13,16 @@ public class UserRecord {
     private String userId;
     private String userNumber;
 
+    public UserRecord(){
+
+    }
+
+    public UserRecord(String id, String name, String userNumber){
+        this.userId=id;
+        this.userNumber = userNumber;
+        this.name = name;
+    }
+
     @DynamoDBAttribute(attributeName = "name")
     public String getName() {
         return name;
