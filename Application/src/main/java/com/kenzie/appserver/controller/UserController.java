@@ -41,15 +41,6 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<User> users = userService.findAll();
-
-        List<UserResponse> responses = users.stream().map(UserResponse::new).collect(Collectors.toList());
-
-        return ResponseEntity.ok(responses);
-    }
-
     /**
      *
      * @param userCreateRequest
@@ -69,12 +60,11 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable("id")String userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully");
-
-// TODO: Add method to get all Users
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.findAll();
 
         if(userList.isEmpty()){
             return ResponseEntity.noContent().build();
