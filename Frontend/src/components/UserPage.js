@@ -67,6 +67,5 @@ export function UserPage() {
 export async function usersLoader() {
   const users = await axios.get("http://localhost:5001/user/all")
     .then((response) => response.data)
-  console.log(users)
   return {users}
 }

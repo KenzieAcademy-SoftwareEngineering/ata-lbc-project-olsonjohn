@@ -5,7 +5,6 @@ import Typography from "@mui/joy/Typography";
 
 function UserCard(user) {
     const {name, userNumber} = user.user
-    console.log(user)
     return (
         <>
             <Card variant="soft" sx={{display: "flex", minWidth: "360px", maxWidth: "460px"}}>
@@ -25,6 +24,4 @@ function UserCard(user) {
 
     )
 }
-
-
 export default UserCard

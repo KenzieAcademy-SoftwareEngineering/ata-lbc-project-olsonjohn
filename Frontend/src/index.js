@@ -8,15 +8,17 @@ import Home from "./components/Home";
 import {UserPage, usersLoader} from "./components/UserPage";
 import {createRoot} from "react-dom/client";
 import {UserDetail} from "./components/UserDetail";
-
-
+import UpdateUserAction from "./components/User/UserEditForm"
+import UserEditForm from "./components/User/UserEditForm";
+import {UpdateUserLoader} from "./components/User/UserEditForm";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<App/>}>
         <Route index element={<Home/>}/>
-        <Route id="users" path="/users" element={<UserPage/>} loader={usersLoader}>
-          <Route path="/users/:id" element={<UserDetail/>}/>
+        <Route id="users" path="/users" element={<UserPage />} loader={usersLoader}>
+          <Route path="/users/:id" element={<UserDetail />} loader={UpdateUserLoader} />
+          <Route path="/users/:id/edit" element={<UserEditForm />} loader={UpdateUserLoader} action={UpdateUserAction}/>
         </Route>
         <Route path="/customers" element={<CustomerPage/>} loader={customersLoader}/>
         <Route path="/tickets" element={<ErrorPage/>}/>

@@ -1,16 +1,17 @@
 import React from "react";
-import {useParams, useRouteLoaderData} from "react-router-dom";
+import {NavLink, useParams, useRouteLoaderData} from "react-router-dom";
 import {Box, Typography, Divider, CardContent, ListDivider} from "@mui/joy";
 import Card from "@mui/joy/Card";
 import EditModal from "./Customer/EditModal";
 import Avatar from "@mui/joy/Avatar";
 import UserEditModal from "./User/UserEditModal";
-export const UserDetail = () => {
+import {Icon} from "@iconify/react";
+import Button from "@mui/joy/Button";
+export function UserDetail() {
 
   const currentId = useParams().id
   const userList = useRouteLoaderData("users").users
   const user = userList.find(({userId}) => userId === currentId)
-  console.log(user)
   const { userId, name, userNumber } = user;
   return (
     <>
@@ -23,7 +24,7 @@ export const UserDetail = () => {
             <Typography>
               {name}
             </Typography>
-            <UserEditModal />
+            <Button as={NavLink} to={`/users/${currentId}/edit`}>  <Icon icon="basil:edit-solid" /></Button>
           </Box>
           <ListDivider/>
           <Box sx={{display:"flex", alignContent:"center",justifyContent:"space-evenly", margin:"5px", padding:"10px"}} >
