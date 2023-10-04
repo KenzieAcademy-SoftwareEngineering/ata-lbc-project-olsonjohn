@@ -1,55 +1,72 @@
-import  React from "react";
+import React from "react";
 
 import Box from "@mui/joy/Box";
-import Typography from "@mui/joy/Typography";
-import Sheet from "@mui/joy/Sheet";
 import UserCard from "./UserCard";
-import {Await, useLoaderData} from "react-router-dom";
+import {Await, NavLink, Outlet, useLoaderData, useNavigation} from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import {Input, Skeleton} from "@mui/joy";
+import {Divider, Skeleton} from "@mui/joy";
 import PageHeader from "./PageHeader";
-function UserPage() {
-    const [loading, setLoading] = React.useState(false);
-    const {users} = useLoaderData();
-    return (
-        <>
-            <Box sx={{
-                display: "flex",
-                alignContent: "center",
-                alignItems: "center",
-                justifyContent: 'center',
-                flexDirection: "column"
-            }}>
-                <Box sx={{display: "flex", padding: "15px", margin: "20px", alignItems: "center"}}>
+import axios from "axios";
+import List from "@mui/joy/List";
+import ListItem from "@mui/joy/ListItem";
 
-                    <PageHeader message="User List" sx={{flexShrink: "1", minWidth: "266px"}}/>
 
-                    <Sheet sx={{elevation: 850, margin: "10px", padding: "10px", borderRadius: "10px"}}>
+export function UserPage() {
+  const navigation = useNavigation();
+  const {users} = useLoaderData();
 
-                        <Input placeholder="Search" sx={{'--Input-focused': 1, width: 256}}/>
-                    </Sheet>
-                </Box>
-                <Grid container sx={{maxWidth: "2600px", display: "flex", justifyContent: "center", gap: "30px"}}>
+  return (
+    <>
+      <Box sx={{
+        display: "flex",
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: 'center',
+        flexDirection: "column"
+      }}>
+        <Box sx={{display: "flex", padding: "15px", margin: "20px", alignItems: "center"}}>
 
-                    <Await resolve={users}>
-                        <Skeleton loading={loading}>
+          <PageHeader message="User List" sx={{flexShrink: "1", minWidth: "266px"}}/>
 
-                            {users.map((user) => (
-                                <Grid item key={user.id} sx={(theme) => ({
-                                        boxShadow: theme.shadow.md,
-                                        '--joy-shadowChannel': theme.vars.palette.primary.mainChannel,
-                                        '--joy-shadowRing': 'inset 0 -3px 0 rgba(0 0 0 / 0.24)',
-                                    })}>
-                                    <UserCard item key={user.id} user={user}/>
-                                </Grid>
+        </Box>
+        <Box sx={{
+          display: "flex",
+          gap: "10px",
+        }}>
 
-                            ))}
-                        </Skeleton>
-                    </Await>
-                </Grid>
-            </Box>
-        </>
-    )
+          <Grid container sx={{maxWidth: "2600px", display: "flex", justifyContent: "center", gap: "30px"}}>
+
+            <Await resolve={users}>
+              <Skeleton loading={navigation.state === 'loading'}>
+                <List>
+                  {users.map((user) => {
+                    const {userId} = user;
+                    return (
+                      <ListItem key={`${userId}`}as={NavLink} to={`/users/${userId}`}
+                                sx={{
+                                  textDecoration: "none",
+                                }}
+                      >
+                        <UserCard key={user.id} user={user}/>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              </Skeleton>
+            </Await>
+          </Grid>
+          <Divider orientation="vertical"/>
+          <Outlet/>
+        </Box>
+      </Box>
+    </>
+  )
 }
 
-export default UserPage;
+
+export async function usersLoader() {
+  const users = await axios.get("http://localhost:5001/user/all")
+    .then((response) => response.data)
+  console.log(users)
+  return {users}
+}

@@ -1,57 +1,29 @@
 import React from "react";
 import App from "./App";
-import { createRoot } from "react-dom/client";
-import { CssVarsProvider, StyledEngineProvider } from "@mui/joy/styles";
-import UserPage from "./components/UserPage";
-import {createBrowserRouter, json, RouterProvider} from "react-router-dom";
-import UserCard from "./components/UserCard";
+import {StyledEngineProvider} from "@mui/joy/styles";
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import ErrorPage from "./ErrorPage.js";
-import axios from "axios";
-import CustomerPage from "./components/CustomerPage";
+import CustomerPage, {customersLoader} from "./components/CustomerPage";
 import Home from "./components/Home";
-import {customerData} from './components/customerdata.js'
+import {UserPage, usersLoader} from "./components/UserPage";
+import {createRoot} from "react-dom/client";
+import {UserDetail} from "./components/UserDetail";
 
 
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "overview/",
-        element: <Home />,
-      },
-      {
-        path: "tickets/",
-        element: <ErrorPage />,
-      },
-      {
-        path: "customers/",
-        element: <CustomerPage />,
-        loader: async({params, request}) =>{
-          const customers = customerData;
-          return { customers }
-        }
-      },
-      {
-        path: "users/",
-        element: <UserPage />,
-        loader: async ({params, request}) => {
-          const users = await axios.get("http://localhost:5001/user/all")
-              .then((response) => response.data )
-          return { users }
-        }
-      },
-      {
-        path: "users/:id",
-        element: <UserCard />,
-      }
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route element={<App/>}>
+        <Route index element={<Home/>}/>
+        <Route id="users" path="/users" element={<UserPage/>} loader={usersLoader}>
+          <Route path="/users/:id" element={<UserDetail/>}/>
+        </Route>
+        <Route path="/customers" element={<CustomerPage/>} loader={customersLoader}/>
+        <Route path="/tickets" element={<ErrorPage/>}/>
+      </Route>
+    </>
+  )
+)
 
 const app = document.getElementById("app");
 

@@ -2,11 +2,13 @@ import React from "react";
 import Grid from '@mui/material/Grid';
 import CustomerCard from './Customer/CustomerCard'
 import {Autocomplete, Box, FormControl, Sheet, Skeleton} from '@mui/joy'
-import {Await, useLoaderData} from "react-router-dom";
+import {Await, useLoaderData, useNavigation} from "react-router-dom";
 import PageHeader from "./PageHeader";
+import axios from "axios";
+import {customerData} from "./customerdata";
 
 function CustomerPage() {
-  const [loading, setLoading] = React.useState(false);
+  const navigation = useNavigation();
 
   const {customers} = useLoaderData();
 
@@ -37,9 +39,9 @@ function CustomerPage() {
         <Grid container sx={{maxWidth: "2600px", display: "flex", justifyContent: "center", gap: "30px"}}>
           <Await resolve={customers}>
 
-            <Skeleton loading={loading}>
+            <Skeleton loading={(navigation.state == "loading")}>
               {customers.map((customer) => (
-                <Grid item key={customer.id} sx={(theme) => ({
+                <Grid key={customer.id} sx={(theme) => ({
                   boxShadow: theme.shadow.md,
                   '--joy-shadowChannel': theme.vars.palette.primary.mainChannel,
                   '--joy-shadowRing': 'inset 0 -3px 0 rgba(0 0 0 / 0.24)',
@@ -54,5 +56,11 @@ function CustomerPage() {
     </>
   )
 }
+
+export async function customersLoader() {
+    const customers = customerData;
+    return { customers }
+}
+
 
 export default CustomerPage;

@@ -1,5 +1,4 @@
 import React from "react";
-import useBearStore from "./store";
 import FullMenu from "./components/FullMenu";
 import Header from "./components/Header";
 import Box from "@mui/joy/Box";
@@ -7,19 +6,10 @@ import CssBaseline from "@mui/joy/CssBaseline";
 import {
   CssVarsProvider,
   Divider,
-  Typography,
-  Button,
-  ButtonGroup,
-  Sheet,
 } from "@mui/joy";
 import { Outlet } from "react-router-dom";
-import { extendTheme, useColorScheme } from "@mui/joy/styles";
 import {useNavigation} from "react-router-dom";
 const App = (props) => {
-    const navigation = useNavigation();
- 
-  const theme = extendTheme({
-    cssVarPrefix:'md-demo',});
 
   return (
     <>
@@ -30,7 +20,6 @@ const App = (props) => {
           <FullMenu />
           <Box
             component="main"
-            className={navigation.state === "loading" ? "loading" : "" }
             sx={{
               px: {
                 xs: 2,
@@ -55,7 +44,6 @@ const App = (props) => {
               gap: 1,
             }}
           >
-
             <Divider />
             <Outlet />
           </Box>

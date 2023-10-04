@@ -38,7 +38,7 @@ function CustomerForm() {
       <Divider role="presentation"/>
       <Form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <FormLabel>First Name</FormLabel>
             <Input
               fullWidth
@@ -50,7 +50,7 @@ function CustomerForm() {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <FormLabel>Last Name</FormLabel>
 
             <Input
@@ -63,7 +63,7 @@ function CustomerForm() {
               required
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <FormLabel>Street Address</FormLabel>
 
             <Input
@@ -76,7 +76,7 @@ function CustomerForm() {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid xs={12} sm={4}>
             <FormLabel>City</FormLabel>
 
             <Input
@@ -89,7 +89,7 @@ function CustomerForm() {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid xs={12} sm={4}>
             <FormLabel>State</FormLabel>
 
             <Input
@@ -103,7 +103,7 @@ function CustomerForm() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid xs={12} sm={4}>
             <FormLabel>Zip Code</FormLabel>
 
             <Input
@@ -116,7 +116,7 @@ function CustomerForm() {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <FormLabel>Email</FormLabel>
 
             <Input
@@ -130,7 +130,7 @@ function CustomerForm() {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <FormLabel>Phone Number</FormLabel>
 
             <Input
@@ -143,13 +143,13 @@ function CustomerForm() {
               onChange={handleChange}
               required
             />
-          </Grid> <Grid item xs={6}>
+          </Grid> <Grid xs={6}>
 
           <Button type="cancel" variant="soft" color="danger">
             Delete
           </Button>
         </Grid>
-          <Grid item xs={6}>
+          <Grid xs={6}>
             <ButtonGroup spacing="2em" buttonFlex="0 1 200px">
             <Button type="submit" variant="outlined" color="warning">
               Cancel

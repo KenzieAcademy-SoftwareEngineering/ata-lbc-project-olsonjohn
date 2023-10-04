@@ -11,7 +11,7 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "webpack --mode production --env production --devtool=source-map",
-    "start": "webpack-dev-server --devtool=eval-source-map --mode=development --env=development --hot",
+    "start": "webpack-dev-server --devtool=eval-source-map --mode=development --env=development",
     "clean": "rm -rf dist",
     "serve": "webpack serve --mode development",
     "build-r": "webpack --mode production"
