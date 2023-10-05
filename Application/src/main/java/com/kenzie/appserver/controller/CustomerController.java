@@ -60,6 +60,7 @@ public class CustomerController {
         updatedCustomer.setAddress(customerUpdateRequest.getAddress());
         updatedCustomer.setEmailAddress(customerUpdateRequest.getEmailAddress());
         updatedCustomer.setPhoneNumber(customerUpdateRequest.getPhoneNumber());
+        customerService.updateCustomer(updatedCustomer);
         CustomerResponse customerResponse = new CustomerResponse(updatedCustomer);
         return ResponseEntity.ok(customerResponse);
     }

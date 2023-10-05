@@ -64,7 +64,6 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
-        //UserListConverter userListConverter = new UserListConverter();
         Ticket updatedTicket = ticketService.findByTicketId(ticketId);
         updatedTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
         updatedTicket.setUsers(ticketUpdateRequest.getUsers());
