@@ -1,6 +1,5 @@
 package com.kenzie.appserver.controller;
 
-import com.amazonaws.Response;
 import com.kenzie.appserver.controller.model.CustomerCreateRequest;
 import com.kenzie.appserver.controller.model.CustomerResponse;
 import com.kenzie.appserver.controller.model.CustomerUpdateRequest;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
