@@ -1,6 +1,5 @@
 package com.kenzie.appserver.service.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.controller.model.TicketCreateRequest;
 import com.kenzie.appserver.controller.model.TicketUpdateRequest;
 import com.kenzie.appserver.repositories.model.TicketRecord;
@@ -69,7 +68,6 @@ public class Ticket {
         this.ticketDescription = ticketCreateRequest.getTicketDescription();
         this.createdAt = ZonedDateTime.now();
         this.customerId = ticketCreateRequest.getCustomerId();
-
     }
 
     public Ticket(TicketUpdateRequest ticketUpdateRequest) {
@@ -79,7 +77,6 @@ public class Ticket {
         this.finishedAt = ticketUpdateRequest.getFinishedAt();
     }
 
-    @JsonProperty("users")
     public List<String> getUsers() {
         return users;
     }

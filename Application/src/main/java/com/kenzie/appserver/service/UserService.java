@@ -46,26 +46,33 @@ public class UserService {
     }
 
     public UserRecord createUserRecord(User user) {
-        UserRecord userRecord = new UserRecord();
-        userRecord.setUserNumber(user.getUserNumber());
-        userRecord.setName(user.getName());
-        userRecord.setUserId(user.getUserId());
-        return userRecord;
+        if (user != null) {
+            UserRecord userRecord = new UserRecord();
+            userRecord.setUserNumber(user.getUserNumber());
+            userRecord.setName(user.getName());
+            userRecord.setUserId(user.getUserId());
+            return userRecord;
+        } else {
+            throw new IllegalArgumentException("Input user can not be null");
+        }
     }
 
-    public void updateUser(User updateUser) {
-        User user = this.findById(updateUser.getUserId());
-        user.setUserId(updateUser.getUserId());
-        user.setName(updateUser.getName());
-        user.setUserNumber(updateUser.getUserNumber());
+    public User updateUser(String userId, User updateUser) {
+        UserRecord userRecord = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
-        userRepository.save(createUserRecord(user));
+        userRecord.setName(updateUser.getName());
+
+        userRepository.save(userRecord);
+
+        return new User(userRecord);
+
     }
 
     public void deleteUser(String userId) {
         UserRecord userRecord = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with id: " + userId));
-        userRepository.deleteById(userId);
+        userRepository.delete(userRecord);
     }
 }

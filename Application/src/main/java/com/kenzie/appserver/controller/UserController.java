@@ -27,6 +27,21 @@ public class UserController {
     }
 
     /**
+     *
+     * @param userCreateRequest
+     * @return URL with the user that was created.
+     */
+    @PostMapping
+    public ResponseEntity<UserResponse> addNewUser(@RequestBody UserCreateRequest userCreateRequest) {
+        User user = new User(userCreateRequest);
+        userService.addNewUser(user);
+
+        UserResponse userResponse = new UserResponse(user);
+
+        return ResponseEntity.created(URI.create("/user/" + userResponse.getUserId())).body(userResponse);
+    }
+
+    /**
      * Get a User
      * @param id
      * @return user data
@@ -39,27 +54,6 @@ public class UserController {
         }
         UserResponse userResponse = new UserResponse(user);
         return ResponseEntity.ok(userResponse);
-    }
-
-    /**
-     *
-     * @param userCreateRequest
-     * @return URL with the user that was created.
-     */
-    @PostMapping
-    public ResponseEntity<UserResponse> addNewUser(@RequestBody UserCreateRequest userCreateRequest) {
-        User user = new User(UUID.randomUUID().toString(), userCreateRequest.getUserNumber(), userCreateRequest.getName());
-        userService.addNewUser(user);
-
-        UserResponse userResponse = new UserResponse(user);
-
-        return ResponseEntity.created(URI.create("/user/" + userResponse.getUserId())).body(userResponse);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id")String userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok("User deleted successfully");
     }
 
     @GetMapping("/all")
@@ -78,11 +72,16 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable("id")String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        User updatedUser = userService.findById(userId);
-        updatedUser.setName(userUpdateRequest.getName());
-        userService.updateUser(updatedUser);
+        User user = new User(userUpdateRequest);
+        User updatedUser = userService.updateUser(userId, user);
         UserResponse userResponse = new UserResponse(updatedUser);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id")String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok("User deleted successfully");
     }
 }
 

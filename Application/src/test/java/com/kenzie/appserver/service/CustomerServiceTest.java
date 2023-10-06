@@ -4,12 +4,10 @@ import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.repositories.CustomerRepository;
 import com.kenzie.appserver.repositories.model.CustomerRecord;
 import com.kenzie.appserver.service.model.Customer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +16,7 @@ import static java.util.UUID.randomUUID;
 import static net.andreinc.mockneat.unit.address.Addresses.addresses;
 import static net.andreinc.mockneat.unit.user.Emails.emails;
 import static net.andreinc.mockneat.unit.user.Names.names;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class CustomerServiceTest {
@@ -44,9 +42,9 @@ public class CustomerServiceTest {
         record.setEmailAddress(emails().get());
 
         when(customerRepository.findById(id)).thenReturn(Optional.of(record));
-        Customer customer = customerService.findByID(id);
+        Customer customer = customerService.findById(id);
 
-        Assertions.assertNotNull(customer, "A customer object should be returned");
+        assertNotNull(customer, "A customer object should be returned");
         assertEquals(record.getId(), customer.getId(), "The id should match");
         assertEquals(record.getFirstName(), customer.getFirstName(), "The first name should match");
         assertEquals(record.getLastName(), customer.getLastName(), "The last name should match");
@@ -61,7 +59,7 @@ public class CustomerServiceTest {
 
         doThrow(ResourceNotFoundException.class).when(customerRepository).findById(id);
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.findByID(id), "Expected findById() to throw, but it didn't");
+        assertThrows(ResourceNotFoundException.class, () -> customerService.findById(id), "Expected findById() to throw, but it didn't");
     }
 
     @Test
@@ -105,13 +103,7 @@ public class CustomerServiceTest {
         customer.setPhoneNumber("1-555-555-5555");
         customer.setEmailAddress(emails().get());
 
-        CustomerRecord record = new CustomerRecord();
-        record.setId(id);
-        record.setFirstName(names().first().get());
-        record.setLastName(names().last().get());
-        record.setAddress(addresses().get());
-        record.setPhoneNumber("1-555-555-5555");
-        record.setEmailAddress(emails().get());
+        CustomerRecord record = customerService.createCustomerRecord(customer);
 
         when(customerRepository.save(record)).thenReturn(record);
 
@@ -124,42 +116,60 @@ public class CustomerServiceTest {
     @Test
     void updateCustomer_validInputs_customerUpdated(){
         String id = randomUUID().toString();
-        String firstName = names().first().get();
-        String lastName = names().last().get();
-        String address = addresses().get();
-        String email = emails().get();
-
-        Customer existingCustomer = new Customer();
-        existingCustomer.setId(id);
-        existingCustomer.setFirstName(names().first().get());
-        existingCustomer.setLastName(names().last().get());
-        existingCustomer.setAddress(addresses().get());
-        existingCustomer.setPhoneNumber("1-555-555-5555");
-        existingCustomer.setEmailAddress(emails().get());
-
-        customerService.addNewCustomer(existingCustomer);
-
-        CustomerRecord existingCustomerRecord = customerService.createCustomerRecord(existingCustomer);
 
         Customer updateCustomer = new Customer();
         updateCustomer.setId(id);
-        updateCustomer.setFirstName(firstName);
-        updateCustomer.setLastName(lastName);
-        updateCustomer.setAddress(address);
+        updateCustomer.setFirstName("NewFirstName");
+        updateCustomer.setLastName("NewLastName");
+        updateCustomer.setAddress("NewAddress");
         updateCustomer.setPhoneNumber("1-555-555-5555");
-        updateCustomer.setEmailAddress(email);
+        updateCustomer.setEmailAddress("new@example.com");
+
+        CustomerRecord existingCustomerRecord = new CustomerRecord();
+        existingCustomerRecord.setId(id);
+        existingCustomerRecord.setFirstName("OldFirstName");
+        existingCustomerRecord.setLastName("OldLastName");
+        existingCustomerRecord.setAddress("OldAddress");
+        existingCustomerRecord.setPhoneNumber("1-555-555-5555");
+        existingCustomerRecord.setEmailAddress("old@example.com");
 
         CustomerRecord updatedCustomerRecord = customerService.createCustomerRecord(updateCustomer);
 
         when(customerRepository.findById(id)).thenReturn(Optional.of(existingCustomerRecord));
         when(customerRepository.save(updatedCustomerRecord)).thenReturn(updatedCustomerRecord);
 
-        customerService.updateCustomer(updateCustomer);
+        customerService.updateCustomer(id, updateCustomer);
 
-        verify(customerRepository, times(2)).save(updatedCustomerRecord); //Verify that save was called with customer record
-        assertEquals(firstName, existingCustomer.getFirstName(), "Existing customer firstName should have been updated");
-        assertEquals(lastName, existingCustomer.getLastName(), "Existing customer lastname should have been updated");
-        assertEquals(address, existingCustomer.getAddress(), "Existing customer address should have been updated");
-        assertEquals(email, existingCustomer.getEmailAddress(), "Existing customer email should have been updated");
+        verify(customerRepository).findById(id);
+        verify(customerRepository).save(any(CustomerRecord.class));
+        assertEquals("NewFirstName", updatedCustomerRecord.getFirstName(), "Existing customer firstName should have been updated");
+        assertEquals("NewLastName", updatedCustomerRecord.getLastName(), "Existing customer lastname should have been updated");
+        assertEquals("NewAddress", updatedCustomerRecord.getAddress(), "Existing customer address should have been updated");
+        assertEquals("new@example.com", updatedCustomerRecord.getEmailAddress(), "Existing customer email should have been updated");
+    }
+
+    @Test
+    void createCustomerRecord_nullCustomer_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> customerService.createCustomerRecord(null), "Exception should be thrown when customer is null");
+    }
+
+    @Test
+    void deleteCustomer_validId_deletesCustomer() {
+        String id = randomUUID().toString();
+
+        CustomerRecord record = new CustomerRecord();
+        record.setId(id);
+        record.setFirstName(names().first().get());
+        record.setLastName(names().last().get());
+        record.setAddress(addresses().get());
+        record.setPhoneNumber("1-555-555-5555");
+        record.setEmailAddress(emails().get());
+
+        when(customerRepository.findById(id)).thenReturn(Optional.of(record));
+        doNothing().when(customerRepository).delete(record);
+
+        customerService.deleteCustomer(id);
+
+        verify(customerRepository).delete(record); //verify delete was called with customer record
     }
 }

@@ -18,7 +18,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findByID(String customerId) {
+    public Customer findById(String customerId) {
         return customerRepository
                 .findById(customerId)
                 .map(customerRecord -> new Customer(
@@ -52,32 +52,40 @@ public class CustomerService {
     }
 
     public CustomerRecord createCustomerRecord(Customer customer) {
-        CustomerRecord customerRecord = new CustomerRecord();
-        customerRecord.setId(customer.getId());
-        customerRecord.setLastName(customer.getLastName());
-        customerRecord.setFirstName(customer.getFirstName());
-        customerRecord.setAddress(customer.getAddress());
-        customerRecord.setEmailAddress(customer.getEmailAddress());
-        customerRecord.setPhoneNumber(customer.getPhoneNumber());
-        return customerRecord;
+        if (customer != null) {
+            CustomerRecord customerRecord = new CustomerRecord();
+            customerRecord.setId(customer.getId());
+            customerRecord.setLastName(customer.getLastName());
+            customerRecord.setFirstName(customer.getFirstName());
+            customerRecord.setAddress(customer.getAddress());
+            customerRecord.setEmailAddress(customer.getEmailAddress());
+            customerRecord.setPhoneNumber(customer.getPhoneNumber());
+            return customerRecord;
+        } else {
+            throw new IllegalArgumentException("Input customer can not be null");
+        }
     }
 
-    public void updateCustomer(Customer updateCustomer) {
-        Customer customer = this.findByID(updateCustomer.getId());
-        customer.setFirstName(updateCustomer.getFirstName());
-        customer.setLastName(updateCustomer.getLastName());
-        customer.setAddress(updateCustomer.getAddress());
-        customer.setEmailAddress(updateCustomer.getEmailAddress());
-        customer.setPhoneNumber(updateCustomer.getPhoneNumber());
+    public Customer updateCustomer(String customerId, Customer updateCustomer) {
+        CustomerRecord customerRecord = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + updateCustomer.getId()));
 
-        customerRepository.save(createCustomerRecord(customer));
+        customerRecord.setFirstName(updateCustomer.getFirstName());
+        customerRecord.setLastName(updateCustomer.getLastName());
+        customerRecord.setAddress(updateCustomer.getAddress());
+        customerRecord.setEmailAddress(updateCustomer.getEmailAddress());
+        customerRecord.setPhoneNumber(updateCustomer.getPhoneNumber());
+
+        customerRepository.save(customerRecord);
+
+        return new Customer(customerRecord);
     }
 
     public void deleteCustomer(String customerId) {
         CustomerRecord customerRecord = customerRepository
                 .findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer does not exist with id: " + customerId));
-        customerRepository.deleteById(customerId);
+        customerRepository.delete(customerRecord);
     }
 }
 

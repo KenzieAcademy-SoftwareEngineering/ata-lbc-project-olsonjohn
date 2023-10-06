@@ -64,14 +64,8 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
-        Ticket updatedTicket = ticketService.findByTicketId(ticketId);
-        updatedTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
-        updatedTicket.setUsers(ticketUpdateRequest.getUsers());
-        updatedTicket.setTicketStatus(ticketUpdateRequest.getTicketStatus());
-        if (ticketUpdateRequest.getTicketStatus().equals(TicketStatus.COMPLETED)) {
-            updatedTicket.setFinishedAt(ZonedDateTime.now());
-        }
-        ticketService.updateTicket(updatedTicket);
+        Ticket ticket = new Ticket(ticketUpdateRequest);
+        Ticket updatedTicket = ticketService.updateTicket(ticketId, ticket);
         TicketResponse ticketResponse = new TicketResponse(updatedTicket);
         return ResponseEntity.ok(ticketResponse);
     }
