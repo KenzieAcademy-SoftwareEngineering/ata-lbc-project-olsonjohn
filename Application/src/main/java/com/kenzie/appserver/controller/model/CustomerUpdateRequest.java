@@ -6,6 +6,8 @@ import javax.validation.constraints.NotEmpty;
 
 public class CustomerUpdateRequest {
     @NotEmpty
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("firstName")
     private String firstName;
     @JsonProperty("lastName")
@@ -16,6 +18,14 @@ public class CustomerUpdateRequest {
     private String emailAddress;
     @JsonProperty("phoneNumber")
     private String phoneNumber;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

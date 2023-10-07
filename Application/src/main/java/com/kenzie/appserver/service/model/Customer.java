@@ -1,6 +1,7 @@
 package com.kenzie.appserver.service.model;
 
 import com.kenzie.appserver.controller.model.CustomerCreateRequest;
+import com.kenzie.appserver.controller.model.CustomerUpdateRequest;
 import com.kenzie.appserver.repositories.model.CustomerRecord;
 
 import java.util.Objects;
@@ -44,6 +45,15 @@ public class Customer {
         this.address = customerCreateRequest.getAddress();
         this.emailAddress = customerCreateRequest.getEmailAddress();
         this.phoneNumber = customerCreateRequest.getPhoneNumber();
+    }
+
+    public Customer(CustomerUpdateRequest customerUpdateRequest) {
+        this.id = customerUpdateRequest.getId();
+        this.firstName = customerUpdateRequest.getFirstName();
+        this.lastName = customerUpdateRequest.getLastName();
+        this.address = customerUpdateRequest.getAddress();
+        this.emailAddress = customerUpdateRequest.getEmailAddress();
+        this.phoneNumber = customerUpdateRequest.getPhoneNumber();
     }
 
     public Customer() {

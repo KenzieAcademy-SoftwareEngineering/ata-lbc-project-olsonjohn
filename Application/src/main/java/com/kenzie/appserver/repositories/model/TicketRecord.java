@@ -23,7 +23,6 @@ public class TicketRecord {
     private String customerId;
     private List<String> users;
 
-
     @DynamoDBAttribute(attributeName = "subject")
     public String getTicketSubject() {
         return ticketSubject;
@@ -42,8 +41,7 @@ public class TicketRecord {
     public ZonedDateTime getFinishedAt() {
         return finishedAt;
     }
-    //@DynamoDBRangeKey(attributeName = "status")
-    @DynamoDBAttribute(attributeName = "ticketStatus")
+    @DynamoDBRangeKey(attributeName = "ticketStatus")
     @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.S)
     public TicketStatus getTicketStatus() {
         return ticketStatus;
@@ -56,7 +54,6 @@ public class TicketRecord {
     @DynamoDBIndexHashKey(globalSecondaryIndexName =TICKETS_INDEX, attributeName = "customerId")
     public String getCustomerId() {return customerId;}
     @DynamoDBAttribute(attributeName = "users")
-    //@DynamoDBTypeConverted(converter = UserListConverter.class)
     public List<String> getUsers() {return users;}
 
     public void setTicketSubject(String ticketSubject) {
