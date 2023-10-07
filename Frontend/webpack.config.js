@@ -10,9 +10,11 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "src/index.html", // to import index.html file inside index.js
+      inject: false
     }),
   ],
   devServer: {
+    historyApiFallback: true,
     port: 3030, // you can change the port
     hot: true
   },
