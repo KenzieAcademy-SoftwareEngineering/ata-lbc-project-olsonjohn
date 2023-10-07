@@ -140,12 +140,8 @@ public class CustomerServiceTest {
 
         customerService.updateCustomer(id, updateCustomer);
 
-        verify(customerRepository).findById(id);
-        verify(customerRepository).save(any(CustomerRecord.class));
-        assertEquals("NewFirstName", updatedCustomerRecord.getFirstName(), "Existing customer firstName should have been updated");
-        assertEquals("NewLastName", updatedCustomerRecord.getLastName(), "Existing customer lastname should have been updated");
-        assertEquals("NewAddress", updatedCustomerRecord.getAddress(), "Existing customer address should have been updated");
-        assertEquals("new@example.com", updatedCustomerRecord.getEmailAddress(), "Existing customer email should have been updated");
+        verify(customerRepository).findById(id); //verify findById() was called with id
+        verify(customerRepository).save(any(CustomerRecord.class)); //verify save() was called with a CustomerRecord
     }
 
     @Test

@@ -8,7 +8,8 @@ import com.kenzie.appserver.repositories.model.TicketStatus;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 public class Ticket {
     private String ticketSubject;
@@ -20,6 +21,7 @@ public class Ticket {
     private String customerId;
     private List<String> users;
 
+    public Ticket() {}
 
     public Ticket(String ticketId,
                   String customerId,
@@ -63,7 +65,7 @@ public class Ticket {
     }
 
     public Ticket(TicketCreateRequest ticketCreateRequest) {
-        this.ticketId = UUID.randomUUID().toString();
+        this.ticketId = randomUUID().toString();
         this.ticketSubject = ticketCreateRequest.getTicketSubject();
         this.ticketDescription = ticketCreateRequest.getTicketDescription();
         this.createdAt = ZonedDateTime.now();

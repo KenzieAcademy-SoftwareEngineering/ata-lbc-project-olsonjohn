@@ -3,6 +3,7 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.UserCreateRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
+import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.service.UserService;
 import com.kenzie.appserver.service.model.User;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +32,14 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<UserResponse> addNewUser(@RequestBody UserCreateRequest userCreateRequest) {
-        User user = new User(userCreateRequest);
-        userService.addNewUser(user);
-
-        UserResponse userResponse = new UserResponse(user);
-
-        return ResponseEntity.created(URI.create("/user/" + userResponse.getUserId())).body(userResponse);
+        try {
+            User user = new User(userCreateRequest);
+            userService.addNewUser(user);
+            UserResponse userResponse = new UserResponse(user);
+            return ResponseEntity.created(URI.create("/user/" + userResponse.getUserId())).body(userResponse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**
@@ -45,41 +48,59 @@ public class UserController {
      * @return user data
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> get(@PathVariable("id") String id) {
-        User user = userService.findById(id);
-        if (user == null) {
+    public ResponseEntity<UserResponse> getUser(@PathVariable("id") String id) {
+        try {
+            User user = userService.findById(id);
+            UserResponse userResponse = new UserResponse(user);
+            return ResponseEntity.ok(userResponse);
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
         }
-        UserResponse userResponse = new UserResponse(user);
-        return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<User> userList = userService.findAll();
-
-        if(userList.isEmpty()){
-            return ResponseEntity.noContent().build();
+        try {
+            List<User> userList = userService.findAll();
+            if (userList.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            List<UserResponse> responses = new ArrayList<>();
+            for (User user : userList) {
+                responses.add(new UserResponse(user));
+            }
+            return ResponseEntity.ok(responses);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
         }
-        List<UserResponse> responses = new ArrayList<>();
-        for( User user: userList){
-            responses.add(new UserResponse(user));
-        }
-        return ResponseEntity.ok(responses);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable("id")String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        User user = new User(userUpdateRequest);
-        User updatedUser = userService.updateUser(userId, user);
-        UserResponse userResponse = new UserResponse(updatedUser);
-        return ResponseEntity.ok(userResponse);
+        try {
+            User user = new User(userUpdateRequest);
+            User updatedUser = userService.updateUser(userId, user);
+            UserResponse userResponse = new UserResponse(updatedUser);
+            return ResponseEntity.ok(userResponse);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id")String userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok("User deleted successfully");
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.ok("User deleted successfully");
+        } catch(ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
 

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "Tickets")
-
 public class TicketRecord {
     public static final String TICKETS_INDEX = "TicketsIndex";
     private String ticketSubject;
@@ -41,8 +40,8 @@ public class TicketRecord {
     public ZonedDateTime getFinishedAt() {
         return finishedAt;
     }
-    @DynamoDBRangeKey(attributeName = "ticketStatus")
     @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.S)
+    @DynamoDBAttribute(attributeName = "ticketStatus")
     public TicketStatus getTicketStatus() {
         return ticketStatus;
     }

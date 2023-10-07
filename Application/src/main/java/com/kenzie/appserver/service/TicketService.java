@@ -2,7 +2,6 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.repositories.TicketRepository;
-import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 import com.kenzie.appserver.service.model.Ticket;
@@ -17,20 +16,18 @@ import java.util.Objects;
 @Service
 public class TicketService {
     private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
 
-    public TicketService(TicketRepository ticketRepository, UserRepository userRepository) {
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
     }
 
-    public Ticket createTicket(Ticket ticket) {
+    public Ticket createTicket(Ticket ticket) throws IllegalArgumentException {
         TicketRecord ticketRecord = createTicketRecord(ticket);
         ticketRepository.save(ticketRecord);
         return ticket;
     }
 
-    public Ticket findByTicketId(String ticketId) {
+    public Ticket findByTicketId(String ticketId) throws IllegalArgumentException, NullPointerException {
         return ticketRepository
                 .findById(ticketId)
                 .map(ticketRecord -> new Ticket(
@@ -45,7 +42,7 @@ public class TicketService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket does not exist with id: " + ticketId));
     }
 
-    public List<Ticket> findAll() {
+    public List<Ticket> findAll() throws IllegalArgumentException, NullPointerException {
         List<Ticket> tickets = new ArrayList<>();
         ticketRepository
                 .findAll()
@@ -61,7 +58,7 @@ public class TicketService {
         return tickets;
     }
 
-    public List<Ticket> findTicketsForCustomerId(String customerId) {
+    public List<Ticket> findTicketsForCustomerId(String customerId) throws IllegalArgumentException, NullPointerException {
         List<Ticket> tickets = new ArrayList<>();
         ticketRepository
                 .findAllById(Collections.singleton(customerId))
@@ -95,14 +92,13 @@ public class TicketService {
         }
     }
 
-    public Ticket updateTicket(String ticketId, Ticket updateTicket){
+    public Ticket updateTicket(String ticketId, Ticket updateTicket) throws IllegalArgumentException {
         TicketRecord ticketRecord = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + ticketId));
-
-        if (updateTicket.getTicketStatus().equals(TicketStatus.COMPLETED)) {
+        if (updateTicket.getTicketStatus() != null && updateTicket.getTicketStatus().equals(TicketStatus.COMPLETED)) {
             ticketRecord.setFinishedAt(ZonedDateTime.now());
             ticketRecord.setTicketStatus(updateTicket.getTicketStatus());
-        } else if (updateTicket.getTicketStatus() != ticketRecord.getTicketStatus()) {
+        } else if (updateTicket.getTicketStatus() != null && updateTicket.getTicketStatus() != ticketRecord.getTicketStatus()) {
             ticketRecord.setTicketStatus(updateTicket.getTicketStatus());
         }
         if (updateTicket.getTicketSubject() != null && !Objects.equals(updateTicket.getTicketSubject(), ticketRecord.getTicketSubject())) {
@@ -115,11 +111,10 @@ public class TicketService {
             ticketRecord.setUsers(updateTicket.getUsers());
         }
         ticketRepository.save(ticketRecord);
-
         return new Ticket(ticketRecord);
     }
 
-    public void deleteTicket(String ticketId) {
+    public void deleteTicket(String ticketId) throws IllegalArgumentException {
         TicketRecord ticketRecord = ticketRepository
                 .findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket does not exist with id: " + ticketId));
