@@ -1,30 +1,54 @@
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const fetchUsers = async (id) => {
+const getUsers = async (id) => {
   const response = await axios
     .get("http://localhost:5001/user/all")
     .then((response) => response.data);
   return response;
 };
-const fetchUsersId = async (id) => {
+const getUser = async (id) => {
   const response = await axios
     .get(`http://localhost:5001/user/${id}`)
-     .then((response) => response.data);
+    .then((response) => response.data);
   return response;
 };
 
-
-export const useUsers = () => {
-  return useQuery({ queryKey: ["users"], queryFn: fetchUsers });
+const addUser = async (data) => {
+  const response = await axios
+    .post("http://localhost:5001/user", data)
+    .then((response) => response.data);
+  return response;
 };
 
-export const useUsersId = (id) => {
-  return useQuery({ queryKey: ["users", id], queryFn: () => fetchUsersId(id) });
+const editUser = async ({ id, data }) => {
+  const response = await axios
+    .put(`http://localhost:5001/user/${id}`, data)
+    .then((response) => response.data);
+  return response;
 };
 
+export const useGetUsers = () => {
+  return useQuery({ queryKey: ["users"], queryFn: getUsers });
+};
 
+export const useGetUser = (id) => {
+  return useQuery({ queryKey: ["users", id], queryFn: () => getUser(id) });
+};
 
-// export const useUsersID = (id) => {
-//   return useQuery({ queryKey: ["users", id], queryFn: fetchUsers(id) });
-// };
+export const useAddUser = (data) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (newUser) => addUser(newUser),
+    onSuccess: () => queryClient.invalidateQueries(["users"]),
+  });
+};
+
+export const useEditUser = ({ id, data }) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newUser) => editUser({ id, data: newUser }),
+    onSuccess: () => queryClient.invalidateQueries(["users"]),
+  });
+};

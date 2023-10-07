@@ -2,13 +2,40 @@
 
 # Function to generate a random name
 generate_random_name() {
-    names=("Alice" "Bob" "Charlie" "David" "Eva" "Frank" "Grace" "Henry" "Irene" "Jack")
+  names_with_last_names=(
+    "Taylor Smith"
+    "Jordan Johnson"
+    "Alex Brown"
+    "Riley Davis"
+    "Casey Martinez"
+    "Jordan Miller"
+    "Avery Clark"
+    "Peyton Lewis"
+    "Dakota Hall"
+    "Taylor Lee"
+    "Alex Taylor"
+    "Jordan Parker"
+    "Riley Morgan"
+    "Casey Cooper"
+    "Taylor Kelly"
+    "Avery Bailey"
+    "Jordan Carter"
+    "Peyton Hayes"
+    "Dakota Reed"
+    "Riley Gray"
+    "Charlie Brooks"
+    "Jamie Morgan"
+    "Taylor Green"
+    "Alex Reed"
+    "Peyton Bailey"
+    "Jordan Green"
+)
     echo "${names[$RANDOM % ${#names[@]}]}"
 }
 
-# Function to generate a random number between 1 and 1000
+# Function to generate a random number between 101 and 1000
 generate_random_number() {
-    echo "$((RANDOM % 1000 + 1))"
+    echo "$((RANDOM % 1000 + 101))"
 }
 
 # Loop to send 25 POST requests

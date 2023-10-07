@@ -12,12 +12,12 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useOutletContext, useParams } from "react-router-dom";
-import { useUsersId } from "../../hooks/useUsers";
+import { useGetUser } from "../../hooks";
 
 function UserInfoCard(props) {
   const { id } = useParams();
 
-  const { data, status: userStatus } = useUsersId(id);
+  const { data, status: userStatus } = useGetUser(id);
 
   const { pictures } = useOutletContext();
   if (userStatus === "loading") {
