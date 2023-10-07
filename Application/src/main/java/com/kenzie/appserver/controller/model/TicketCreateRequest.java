@@ -1,7 +1,6 @@
 package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kenzie.appserver.service.model.User;
 
 import java.util.List;
 

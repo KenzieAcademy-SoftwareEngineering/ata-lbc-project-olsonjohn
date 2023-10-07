@@ -18,7 +18,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findById(String customerId) {
+    public Customer findById(String customerId) throws IllegalArgumentException, NullPointerException {
         return customerRepository
                 .findById(customerId)
                 .map(customerRecord -> new Customer(
@@ -31,7 +31,7 @@ public class CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer does not exist with id: " + customerId));
     }
 
-    public List<Customer> findAll() {
+    public List<Customer> findAll() throws IllegalArgumentException, NullPointerException {
         List<Customer> customers = new ArrayList<>();
         customerRepository
                 .findAll()
@@ -45,7 +45,7 @@ public class CustomerService {
         return customers;
     }
 
-    public Customer addNewCustomer(Customer customer) {
+    public Customer addNewCustomer(Customer customer) throws IllegalArgumentException {
         CustomerRecord customerRecord = createCustomerRecord(customer);
         customerRepository.save(customerRecord);
         return customer;
@@ -66,22 +66,19 @@ public class CustomerService {
         }
     }
 
-    public Customer updateCustomer(String customerId, Customer updateCustomer) {
+    public Customer updateCustomer(String customerId, Customer updateCustomer) throws IllegalArgumentException {
         CustomerRecord customerRecord = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + updateCustomer.getId()));
-
         customerRecord.setFirstName(updateCustomer.getFirstName());
         customerRecord.setLastName(updateCustomer.getLastName());
         customerRecord.setAddress(updateCustomer.getAddress());
         customerRecord.setEmailAddress(updateCustomer.getEmailAddress());
         customerRecord.setPhoneNumber(updateCustomer.getPhoneNumber());
-
         customerRepository.save(customerRecord);
-
         return new Customer(customerRecord);
     }
 
-    public void deleteCustomer(String customerId) {
+    public void deleteCustomer(String customerId) throws IllegalArgumentException {
         CustomerRecord customerRecord = customerRepository
                 .findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer does not exist with id: " + customerId));

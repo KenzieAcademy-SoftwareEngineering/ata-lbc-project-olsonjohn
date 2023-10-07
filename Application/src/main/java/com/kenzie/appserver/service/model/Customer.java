@@ -5,7 +5,8 @@ import com.kenzie.appserver.controller.model.CustomerUpdateRequest;
 import com.kenzie.appserver.repositories.model.CustomerRecord;
 
 import java.util.Objects;
-import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 public class Customer {
     private String id;
@@ -39,7 +40,7 @@ public class Customer {
     }
 
     public Customer(CustomerCreateRequest customerCreateRequest) {
-        this.id = UUID.randomUUID().toString();
+        this.id = randomUUID().toString();
         this.firstName = customerCreateRequest.getFirstName();
         this.lastName = customerCreateRequest.getLastName();
         this.address = customerCreateRequest.getAddress();

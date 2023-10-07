@@ -21,7 +21,6 @@ public class CustomerResponse {
     @JsonProperty("phoneNumber")
     private String phoneNumber;
 
-
     public CustomerResponse(){
 
     }

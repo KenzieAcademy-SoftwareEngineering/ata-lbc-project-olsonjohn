@@ -6,7 +6,8 @@ import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
 
 import java.util.Objects;
-import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 @DynamoDBDocument
 public class User {
@@ -27,7 +28,7 @@ public class User {
     }
 
     public User(UserCreateRequest userCreateRequest) {
-        this.userId = UUID.randomUUID().toString();
+        this.userId = randomUUID().toString();
         this.name = userCreateRequest.getName();
         this.userNumber = userCreateRequest.getUserNumber();
     }

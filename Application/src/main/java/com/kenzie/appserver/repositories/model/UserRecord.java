@@ -6,7 +6,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
 
-
 @DynamoDBTable(tableName = "Users")
 public class UserRecord {
     private String name;

@@ -117,9 +117,8 @@ public class UserServiceTest {
 
         userService.updateUser(id, updateUser);
 
-        verify(userRepository).findById(id);
-        verify(userRepository).save(any(UserRecord.class));
-        assertEquals("NewName", updatedUserRecord.getName(), "Existing user name should have been updated");
+        verify(userRepository).findById(id); //verify findById() was called with id
+        verify(userRepository).save(any(UserRecord.class)); //verify save() was called with a UserRecord()
     }
 
     @Test

@@ -18,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findById(String id) {
+    public User findById(String id)  throws IllegalArgumentException, NullPointerException {
         return userRepository
                 .findById(id)
                 .map(user -> new User(
@@ -28,7 +28,7 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with id: " + id));
     }
 
-    public List<User> findAll() {
+    public List<User> findAll() throws IllegalArgumentException, NullPointerException {
         List<User> users = new ArrayList<>();
         userRepository
                 .findAll()
@@ -39,7 +39,7 @@ public class UserService {
         return users;
     }
 
-    public User addNewUser(User user) {
+    public User addNewUser(User user) throws IllegalArgumentException{
         UserRecord userRecord = createUserRecord(user);
         userRepository.save(userRecord);
         return user;
@@ -57,19 +57,16 @@ public class UserService {
         }
     }
 
-    public User updateUser(String userId, User updateUser) {
+    public User updateUser(String userId, User updateUser) throws IllegalArgumentException {
         UserRecord userRecord = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-
         userRecord.setName(updateUser.getName());
-
         userRepository.save(userRecord);
-
         return new User(userRecord);
 
     }
 
-    public void deleteUser(String userId) {
+    public void deleteUser(String userId) throws IllegalArgumentException {
         UserRecord userRecord = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with id: " + userId));
