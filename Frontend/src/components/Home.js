@@ -1,26 +1,20 @@
 import React from "react";
-import {Sheet, Button, Typography} from "@mui/joy";
-import {ToastContainer, toast} from 'react-toastify';
+import {Box, Container, Center, Text } from "@chakra-ui/react";
 
 
 function Home() {
-
-  const notify = () => toast("Login Not Implemented Yet"); 
-
   return (
     <>
-    <Sheet>
-    <Button color="danger" variant="outlined" size="sm" sz={{display: "flex", flexDirection: 'row', alignItems: 'center',}} onClick={notify}>
-        <Typography level="body-md">Login</Typography>
-        </Button>
-      </Sheet>
-      {/* <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-        <Grid xs={}>
-        </Grid>
-        <Grid xs={10}>
-     
-       </Grid>
-      </Grid> */}
+    <Box>
+
+      <h1>Home</h1>
+    
+      <Container boxShadow="dark-lg" p='4' size={'lg'} rounded={'20px'}>
+        <Center>
+          <Text>Hello World</Text>
+        </Center>
+      </Container>
+    </Box>
     </>
   );
 }

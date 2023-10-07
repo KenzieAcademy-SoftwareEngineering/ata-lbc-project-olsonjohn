@@ -1,0 +1,15 @@
+###
+POST http://localhost:5001/user
+Content-Type: application/json
+
+{
+  "userNumber": "200",
+  "name": "John"
+}
+
+###
+
+GET http://localhost:5001/user/all
+
+###
+GET http://localhost:5001/user/0f4f0d65-82d9-43cf-8f9b-5fbc0b86ba63

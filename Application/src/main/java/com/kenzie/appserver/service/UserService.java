@@ -34,8 +34,8 @@ public class UserService {
                 .findAll()
                 .forEach(user -> users.add(new User(
                         user.getUserId(),
-                        user.getName(),
-                        user.getUserNumber())));
+                        user.getUserNumber(),
+                        user.getName())));
         return users;
     }
 
