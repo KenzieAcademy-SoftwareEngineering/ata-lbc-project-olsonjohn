@@ -6,7 +6,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
 
-
 @DynamoDBTable(tableName = "Customers")
 public class CustomerRecord {
     private String id;
@@ -15,7 +14,6 @@ public class CustomerRecord {
     private String address;
     private String emailAddress;
     private String phoneNumber;
-
 
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {

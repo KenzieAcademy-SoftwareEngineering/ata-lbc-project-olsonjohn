@@ -6,14 +6,11 @@ import com.kenzie.appserver.service.model.User;
 import javax.validation.constraints.NotEmpty;
 
 public class UserResponse {
-
     @NotEmpty
     @JsonProperty("userNumber")
     private String userNumber;
-
     @JsonProperty("name")
     private String name;
-
     @JsonProperty("userId")
     private String userId;
 

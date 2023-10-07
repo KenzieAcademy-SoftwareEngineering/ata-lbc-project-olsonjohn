@@ -10,7 +10,6 @@ public class UserUpdateRequest {
     private String id;
     @JsonProperty("name")
     private String name;
-
     @JsonProperty("userNumber")
     private String userNumber;
 

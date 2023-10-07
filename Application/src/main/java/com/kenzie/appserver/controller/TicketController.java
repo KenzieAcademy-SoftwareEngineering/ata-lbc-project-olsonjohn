@@ -3,14 +3,13 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.TicketCreateRequest;
 import com.kenzie.appserver.controller.model.TicketResponse;
 import com.kenzie.appserver.controller.model.TicketUpdateRequest;
-import com.kenzie.appserver.repositories.model.TicketStatus;
+import com.kenzie.appserver.exception.ResourceNotFoundException;
 import com.kenzie.appserver.service.TicketService;
 import com.kenzie.appserver.service.model.Ticket;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,55 +22,84 @@ public class TicketController {
 
     @PostMapping
     public ResponseEntity<TicketResponse> addNewTicket(@RequestBody TicketCreateRequest ticketCreateRequest) {
-        Ticket ticket = new Ticket(ticketCreateRequest);
-        ticket.setUsers(new ArrayList<>());
-        ticket.setTicketStatus(TicketStatus.NEW);
-        ticketService.createTicket(ticket);
-
-        TicketResponse ticketResponse = new TicketResponse(ticket);
-
-        return ResponseEntity.created(URI.create("/ticket/" + ticketResponse.getTicketId())).body(ticketResponse);
+        try {
+            Ticket ticket = new Ticket(ticketCreateRequest);
+            ticketService.createTicket(ticket);
+            TicketResponse ticketResponse = new TicketResponse(ticket);
+            return ResponseEntity.created(URI.create("/ticket/" + ticketResponse.getTicketId())).body(ticketResponse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponse> getTicket(@PathVariable("id")String ticketId) {
-        Ticket ticket = ticketService.findByTicketId(ticketId);
-        if (ticket == null) {
+        try {
+            Ticket ticket = ticketService.findByTicketId(ticketId);
+            TicketResponse ticketResponse = new TicketResponse(ticket);
+            return ResponseEntity.ok(ticketResponse);
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
         }
-        TicketResponse ticketResponse = new TicketResponse(ticket);
-        return ResponseEntity.ok(ticketResponse);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<TicketResponse>> getAllTickets() {
-        List<Ticket> tickets = ticketService.findAll();
-
-        List<TicketResponse> responses = tickets.stream().map(TicketResponse::new).collect(Collectors.toList());
-
-        return ResponseEntity.ok(responses);
+        try {
+            List<Ticket> tickets = ticketService.findAll();
+            if (tickets.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            List<TicketResponse> responses = tickets
+                    .stream()
+                    .map(TicketResponse::new).collect(Collectors.toList());
+            return ResponseEntity.ok(responses);
+        }  catch(IllegalArgumentException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("by-customer/{customerId}")
     public ResponseEntity<List<TicketResponse>> getTicketsForCustomerId(@PathVariable("customerId")String customerId) {
-        List<Ticket> tickets = ticketService.findTicketsForCustomerId(customerId);
-
-        List<TicketResponse> responses = tickets.stream().map(TicketResponse::new).collect(Collectors.toList());
-
-        return ResponseEntity.ok(responses);
+        try {
+            List<Ticket> tickets = ticketService.findTicketsForCustomerId(customerId);
+            if (tickets.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            List<TicketResponse> responses = tickets
+                    .stream()
+                    .map(TicketResponse::new).collect(Collectors.toList());
+            return ResponseEntity.ok(responses);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
-        Ticket ticket = new Ticket(ticketUpdateRequest);
-        Ticket updatedTicket = ticketService.updateTicket(ticketId, ticket);
-        TicketResponse ticketResponse = new TicketResponse(updatedTicket);
-        return ResponseEntity.ok(ticketResponse);
+        try {
+            Ticket ticket = new Ticket(ticketUpdateRequest);
+            Ticket updatedTicket = ticketService.updateTicket(ticketId, ticket);
+            TicketResponse ticketResponse = new TicketResponse(updatedTicket);
+            return ResponseEntity.ok(ticketResponse);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTicket(@PathVariable("id")String ticketId) {
-        ticketService.deleteTicket(ticketId);
-        return ResponseEntity.ok("Ticket deleted successfully.");
+        try {
+            ticketService.deleteTicket(ticketId);
+            return ResponseEntity.ok("Ticket deleted successfully.");
+        } catch(ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
