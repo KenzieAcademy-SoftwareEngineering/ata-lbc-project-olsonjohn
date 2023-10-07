@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,15 +63,8 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(@PathVariable("id")String ticketId, @RequestBody TicketUpdateRequest ticketUpdateRequest) {
-        //UserListConverter userListConverter = new UserListConverter();
-        Ticket updatedTicket = ticketService.findByTicketId(ticketId);
-        updatedTicket.setTicketDescription(ticketUpdateRequest.getTicketDescription());
-        updatedTicket.setUsers(ticketUpdateRequest.getUsers());
-        updatedTicket.setTicketStatus(ticketUpdateRequest.getTicketStatus());
-        if (ticketUpdateRequest.getTicketStatus().equals(TicketStatus.COMPLETED)) {
-            updatedTicket.setFinishedAt(ZonedDateTime.now());
-        }
-        ticketService.updateTicket(updatedTicket);
+        Ticket ticket = new Ticket(ticketUpdateRequest);
+        Ticket updatedTicket = ticketService.updateTicket(ticketId, ticket);
         TicketResponse ticketResponse = new TicketResponse(updatedTicket);
         return ResponseEntity.ok(ticketResponse);
     }

@@ -2,15 +2,14 @@ package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.model.TicketStatus;
-import com.kenzie.appserver.service.model.User;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TicketUpdateRequest {
-    @JsonProperty("status")
+    @JsonProperty("ticketId")
+    private String ticketId;
+    @JsonProperty("ticketStatus")
     private TicketStatus ticketStatus;
     @JsonProperty("description")
     private String ticketDescription;
@@ -19,16 +18,13 @@ public class TicketUpdateRequest {
     @JsonProperty("users")
     private List<String> users;
 
+    public String getTicketId() {
+        return ticketId;
+    }
 
-//    public void deserializeUsers(String[] user) {
-//        UserListConverter ulc = new UserListConverter();
-//        ArrayList aList = new ArrayList<>();
-//        for(String u: user) {
-//            aList.add(u);
-//        }
-//        List<User> userList = ulc.unconvert(Arrays.toString(user));
-//        this.users =  userList;
-//    }
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
+    }
 
     public TicketStatus getTicketStatus() {
         return ticketStatus;

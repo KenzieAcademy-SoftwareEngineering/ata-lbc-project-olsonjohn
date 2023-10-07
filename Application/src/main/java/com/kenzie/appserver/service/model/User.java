@@ -1,8 +1,13 @@
 package com.kenzie.appserver.service.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+import com.kenzie.appserver.controller.model.UserCreateRequest;
+import com.kenzie.appserver.controller.model.UserUpdateRequest;
+import com.kenzie.appserver.repositories.model.UserRecord;
 
 import java.util.Objects;
+import java.util.UUID;
+
 @DynamoDBDocument
 public class User {
     private String userId;
@@ -15,10 +20,25 @@ public class User {
         this.name = name;
     }
 
-//    public User(String userId) {
-//        this.userId = userId;
-//
-//    }
+    public User(UserRecord userRecord) {
+        this.userId = userRecord.getUserId();
+        this.name = userRecord.getName();
+        this.userNumber = userRecord.getUserNumber();
+    }
+
+    public User(UserCreateRequest userCreateRequest) {
+        this.userId = UUID.randomUUID().toString();
+        this.name = userCreateRequest.getName();
+        this.userNumber = userCreateRequest.getUserNumber();
+    }
+
+    public User(UserUpdateRequest userUpdateRequest) {
+        this.userId = userUpdateRequest.getId();
+        this.name = userUpdateRequest.getName();
+        this.userNumber = userUpdateRequest.getUserNumber();
+    }
+
+    public User() {}
 
     public String getUserId() {
         return userId;
@@ -35,7 +55,6 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getUserNumber() {
         return userNumber;
