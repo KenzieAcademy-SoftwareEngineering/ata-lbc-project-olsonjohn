@@ -28,6 +28,8 @@ public class TicketResponse {
     @JsonProperty("users")
     private List<String> users;
 
+    public TicketResponse() {}
+
     public TicketResponse(Ticket ticket) {
         this.ticketId = ticket.getTicketId();
         this.ticketSubject = ticket.getTicketSubject();

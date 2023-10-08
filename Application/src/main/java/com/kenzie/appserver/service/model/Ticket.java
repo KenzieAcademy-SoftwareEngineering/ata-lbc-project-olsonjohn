@@ -70,6 +70,7 @@ public class Ticket {
         this.ticketDescription = ticketCreateRequest.getTicketDescription();
         this.createdAt = ZonedDateTime.now();
         this.customerId = ticketCreateRequest.getCustomerId();
+        this.users = ticketCreateRequest.getUsers();
     }
 
     public Ticket(TicketUpdateRequest ticketUpdateRequest) {

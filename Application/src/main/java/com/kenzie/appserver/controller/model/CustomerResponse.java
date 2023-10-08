@@ -21,9 +21,8 @@ public class CustomerResponse {
     @JsonProperty("phoneNumber")
     private String phoneNumber;
 
-    public CustomerResponse(){
+    public CustomerResponse() {}
 
-    }
     public CustomerResponse(Customer customer) {
         this.id = customer.getId();
         this.lastName = customer.getLastName();
