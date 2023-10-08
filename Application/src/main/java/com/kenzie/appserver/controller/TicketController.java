@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/ticket")
 public class TicketController {

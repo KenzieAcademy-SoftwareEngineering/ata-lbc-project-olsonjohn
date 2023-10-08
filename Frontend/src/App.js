@@ -11,9 +11,8 @@ const App = (props) => {
   return (
     <>
       <QueryClientProvider client={new QueryClient()}>
-        <Flex direction="column" w="1100px" alignItems={"space-around"}>
-
         <Header />
+        <Flex marginTop={"70px"} direction="column" w="1100px" alignItems={"space-around"}>
         <Outlet />
         </Flex>
         <ReactQueryDevtools initialIsOpen={false} />
