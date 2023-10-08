@@ -73,6 +73,7 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("phoneNumber")
                         .value(is(phoneNumber)))
                 .andExpect(status().isCreated());
+
     }
 
     @Test
@@ -144,6 +145,8 @@ public class CustomerControllerTest {
                 phoneNumber2);
         Customer persistedCustomer2 = customerService.addNewCustomer(customer2);
 
+        Integer numOfCustomers = customerService.findAll().size();
+
         ResultActions actions = mvc.perform(get("/customer/all")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -151,7 +154,7 @@ public class CustomerControllerTest {
         mapper.registerModule(new JavaTimeModule());
         String responseBody = actions.andReturn().getResponse().getContentAsString();
         List<CustomerResponse> responses = mapper.readValue(responseBody, new TypeReference<List<CustomerResponse>>(){});
-        assertThat(responses.size()).isEqualTo(2);
+        assertThat(responses.size()).isEqualTo(numOfCustomers);
     }
 
     @Test
