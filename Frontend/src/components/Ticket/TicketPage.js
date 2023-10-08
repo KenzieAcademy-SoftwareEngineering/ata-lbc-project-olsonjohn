@@ -1,4 +1,4 @@
-import { Center, Divider,Tabs, TabList, Tab, Box, Heading } from "@chakra-ui/react";
+import { Center, Divider,Tabs, TabList, TabPanel, Tab, Box, Heading, TabPanels } from "@chakra-ui/react";
 import React from "react";
 
 function TicketPage() {
@@ -11,7 +11,7 @@ function TicketPage() {
         </Center>
         <Divider />
         <Tabs size="lg" m="2" variant="enclosed" isFitted>
-          <TabList size="lg">
+          <TabList color="black"size="lg">
             <Tab
               bgColor={"#e5e5e5"}
               _selected={{ color: "black", bg: "green" }}
@@ -26,11 +26,24 @@ function TicketPage() {
             </Tab>{" "}
             <Tab
               bgColor={"#e5e5e5"}
-              _selected={{ color: "black", bg: "red" }}
+              _selected={{ color: "black", bg: "brown" }}
               _focus={{ boxShadow: "lg" }}>
-              Overdue Tickets{" "}
+              Completed Tickets{" "}
             </Tab>
           </TabList>
+          <TabPanels>
+            <TabPanel>
+                New
+            </TabPanel>
+            <TabPanel>
+                In Progress
+            </TabPanel>
+            <TabPanel>
+                Completed
+            </TabPanel>
+          
+          
+          </TabPanels>
         </Tabs>
       </Box>
     </>
