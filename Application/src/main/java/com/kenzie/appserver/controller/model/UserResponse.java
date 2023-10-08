@@ -14,6 +14,8 @@ public class UserResponse {
     @JsonProperty("userId")
     private String userId;
 
+    public UserResponse() {}
+
     public UserResponse(User user) {
         this.userId = user.getUserId();
         this.userNumber = user.getUserNumber();
