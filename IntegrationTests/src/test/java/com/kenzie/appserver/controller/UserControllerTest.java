@@ -95,6 +95,8 @@ public class UserControllerTest {
         User user2 = new User(id2, num2, name2);
         User persistedUser2 = userService.addNewUser(user2);
 
+        Integer numOfUsers = userService.findAll().size();
+
         ResultActions actions = mvc.perform(get("/user/all")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -102,7 +104,7 @@ public class UserControllerTest {
         mapper.registerModule(new JavaTimeModule());
         String responseBody = actions.andReturn().getResponse().getContentAsString();
         List<UserResponse> responses = mapper.readValue(responseBody, new TypeReference<List<UserResponse>>(){});
-        assertThat(responses.size()).isEqualTo(2);
+        assertThat(responses.size()).isEqualTo(numOfUsers);
     }
 
     @Test
