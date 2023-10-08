@@ -72,8 +72,6 @@ repositories {
 }
 
 task copyFrontend(type: Copy) {
-    dependsOn(":Frontend:npm_run_build")
-
     from("../Frontend/dist")
     into("build/resources/main/static")
 }
