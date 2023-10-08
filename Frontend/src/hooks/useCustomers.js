@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const getCustomers = async (id) => {
+const getCustomers = async () => {
   const response = await axios
     .get("http://localhost:5001/customer/all")
     .then((response) => response.data);

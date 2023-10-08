@@ -15,10 +15,11 @@ import UserCard from "./UserCard";
 import { usePictures } from "../../hooks";
 import { useGetUsers } from "../../hooks";
 
-function UserPage() {
+export function UserPage() {
   const { data, status } = useGetUsers();
   const { data: pictures, status: pictureStatus } = usePictures();
   let pictureURLList = [];
+  
   if (pictureStatus === "success") {
     pictureURLList = pictures.results;
   }

@@ -9,11 +9,10 @@ import {
 import ErrorPage from "./ErrorPage.js";
 import Home from "./components/Home";
 import { createRoot } from "react-dom/client";
-import UserInfoCard from "./components/User/UserInfoCard";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import UserPage from "./components/User/UserPage";
+import {UserPage, UserInfoCard, } from "./components/User";
+import { CustomerPage, CustomerInfoCard } from "./components/Customer";
 const theme = extendTheme({
   config: {
     initialColorMode: "dark",
@@ -29,7 +28,14 @@ const router = createBrowserRouter(
           <Route path=":id" element={<UserInfoCard />} />
         {/* <Route path="/users/:id/edit" element={<UserEditForm />} /> */}
         </Route>
-        {/* <Route path="/customers" element={<CustomerPage />} /> */}
+        <Route path="/customers" element={<CustomerPage />}>
+          <Route path=":id" element={<CustomerInfoCard />} />
+          
+          </Route>
+
+
+
+
         {/* <Route path="/tickets" element={<ErrorPage />} /> */}
       </Route>
     </>,

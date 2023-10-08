@@ -2,7 +2,7 @@
 
 # Function to generate a random name
 generate_random_name() {
-  names_with_last_names=(
+  names=(
     "Taylor Smith"
     "Jordan Johnson"
     "Alex Brown"
@@ -35,19 +35,18 @@ generate_random_name() {
 
 # Function to generate a random number between 101 and 1000
 generate_random_number() {
-    echo "$((RANDOM % 1000 + 101))"
+    echo "$((RANDOM % 1000 + 100))"
 }
 
 # Loop to send 25 POST requests
 for ((i=1; i<=25; i++)); do
-    random_name=$(generate_random_name)
-    random_number=$(generate_random_number)
+    random_name="$(generate_random_name)"
+    random_number="$(generate_random_number)"
 
     # Sending POST request with curl
-    curl -X POST -H "Content-Type: application/json" -d '{
-        "name": "'"$random_name"'",
-        "userNumber": "'"$random_number"'"
-    }' http://localhost:5001/user
+ http POST http://localhost:5001/user \
+    name="$random_name" \
+    userNumber="$random_number"
 
     # Sleep for a short interval to avoid overwhelming the server
     sleep 1

@@ -3,12 +3,16 @@ import { Avatar, Box, Center, chakra, Heading } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
 
-export function UserCard(props) {
-  const {user} = props
+function randomNumber() {
+    return Math.floor(Math.random() * 900) + 100;
+}
+
+export function CustomerCard(props) {
+  const {customer} = props
  const {pictures} = props
 
- 
- const picture = pictures[0].picture
+ const pictureNumber = randomNumber()
+ const picture = pictures[pictureNumber].picture
 
   return (
     <>
@@ -30,7 +34,7 @@ export function UserCard(props) {
             src={picture.thumbnail}
             />
             <Box py={5} textAlign="center" as={RouterLink}
-                to={`${user.userId}`}>
+                to={`${customer.id}`}>
               <Heading
                 fontWeight="bold"
                 textAlign="center"
@@ -40,16 +44,8 @@ export function UserCard(props) {
                 _dark={{
                   color: "white",
                 }}>
-                {user.name}
+                {`${customer.firstName} ${customer.lastName}`}
               </Heading>
-              <chakra.span
-                fontSize="sm"
-                color="gray.700"
-                _dark={{
-                  color: "gray.200",
-                }}>
-                {`User Number: ${user.userNumber}`}
-              </chakra.span>
             </Box>
           </Center>
         </Box>
@@ -57,4 +53,4 @@ export function UserCard(props) {
   );
 }
 
-export default UserCard;
+export default CustomerCard;

@@ -3,6 +3,7 @@ package com.kenzie.appserver.repositories.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ public class CustomerRecord {
     private String emailAddress;
     private String phoneNumber;
 
+    @Id
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {
         return id;

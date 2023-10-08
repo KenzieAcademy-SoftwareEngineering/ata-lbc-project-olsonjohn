@@ -14,7 +14,7 @@ import {
 import { useOutletContext, useParams } from "react-router-dom";
 import { useGetUser } from "../../hooks";
 
-function UserInfoCard(props) {
+export function UserInfoCard(props) {
   const { id } = useParams();
 
   const { data, status: userStatus } = useGetUser(id);

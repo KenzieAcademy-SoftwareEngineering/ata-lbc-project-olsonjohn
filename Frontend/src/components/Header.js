@@ -18,7 +18,7 @@ function Header() {
 
   return (
     <>
-      <Box
+      <Box position={"fixed"} zIndex={200} width={"100%"}
         sx={{
           background:
             "linear-gradient(320deg, rgba(2,0,36,0.6208684157256652) 0%, rgba(45,45,204,0.648879620207458) 45%, rgba(35,100,113,0.6208684157256652) 84%, rgba(76,153,65,0.6404762588629201) 100%)",
@@ -37,7 +37,7 @@ function Header() {
               <LinkBox as={RouterLink} to="/">
                 🎫 Tickets
               </LinkBox>
-              <LinkBox as={RouterLink} to="/">
+              <LinkBox as={RouterLink} to="/customers">
                 🧍🏽 Customers
               </LinkBox>
               <LinkBox as={RouterLink} to="users">
