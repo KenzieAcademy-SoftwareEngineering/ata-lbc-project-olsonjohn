@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 
@@ -56,7 +57,7 @@ public class CustomerControllerTest {
         customerCreateRequest.setPhoneNumber(phoneNumber);
 
         mapper.registerModule(new JavaTimeModule());
-        mvc.perform(post("/customer")
+        MvcResult result = mvc.perform(post("/customer")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(customerCreateRequest)))
@@ -72,8 +73,16 @@ public class CustomerControllerTest {
                         .value(is(email)))
                 .andExpect(jsonPath("phoneNumber")
                         .value(is(phoneNumber)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
 
+        String jsonResponse = result.getResponse().getContentAsString();
+        CustomerResponse customerResponse = mapper.readValue(jsonResponse, CustomerResponse.class);
+        String id = customerResponse.getId();
+
+        mvc.perform(delete("customer/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -109,6 +118,10 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("phoneNumber")
                         .value(is(phoneNumber)))
                 .andExpect(status().isOk());
+
+        mvc.perform(delete("customer/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -155,6 +168,13 @@ public class CustomerControllerTest {
         String responseBody = actions.andReturn().getResponse().getContentAsString();
         List<CustomerResponse> responses = mapper.readValue(responseBody, new TypeReference<List<CustomerResponse>>(){});
         assertThat(responses.size()).isEqualTo(numOfCustomers);
+
+        mvc.perform(delete("customer/{id}", id1)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        mvc.perform(delete("customer/{id}", id2)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -206,6 +226,10 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("phoneNumber")
                         .value(is(newPhoneNumber)))
                 .andExpect(status().isOk());
+
+        mvc.perform(delete("customer/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

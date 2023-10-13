@@ -72,7 +72,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void addNewUser_nullUser_statusCode400() throws Exception {
+    public void addNewUser_invalidUser_statusCode400() throws Exception {
         UserCreateRequest userCreateRequest = null;
 
         mapper.registerModule(new JavaTimeModule());
