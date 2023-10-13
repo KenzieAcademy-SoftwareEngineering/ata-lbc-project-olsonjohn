@@ -74,7 +74,7 @@ generate_random_address() {
 }
 
 # Generating a list of 25 customers
-for ((i=1; i<=39; i++)); do
+for ((i=1; i<=5; i++)); do
     random_name="${gender_neutral_names[$RANDOM % ${#gender_neutral_names[@]}]}"
     random_last_name="${last_names[$RANDOM % ${#last_names[@]}]}"
 

@@ -17,7 +17,7 @@ export default function CustomerEditForm(props) {
 
   const mutation = useMutation({
     mutationFn: (formData) => {
-      
+      console.log(formData);
       addCustomer(Object.fromEntries(formData.entries()));
       queryClient.refetchQueries(["customers"])
     },
@@ -36,7 +36,7 @@ export default function CustomerEditForm(props) {
   return (
     <>
       <form
-        id="customer-edit-form"
+        id="customer-add-form"
         onSubmit={onSubmit}
         style={{
           display: "flex",
@@ -104,10 +104,10 @@ export default function CustomerEditForm(props) {
               bg: "green.500",
             }}
             colorScheme="green"
-            disabled={true}
+            
             variant="solid"
             type="submit"
-            form="customer-edit-form">
+            form="customer-add-form">
             Save
           </Button>
         </ButtonGroup>
