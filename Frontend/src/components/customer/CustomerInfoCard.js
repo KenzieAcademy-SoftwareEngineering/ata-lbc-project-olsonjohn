@@ -13,18 +13,14 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  Input,
   ModalContent,
   ModalOverlay,
   ModalCloseButton,
   useDisclosure,
-  FormLabel,
-  InputLeftAddon,
-  InputGroup,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import { useOutletContext, useParams } from "react-router-dom";
-import { useGetCustomer } from "../../hooks";
+import { useGetCustomer, useEditCustomer } from "../../hooks";
+import CustomerEditForm from "./CustomerEditForm";
 
 function randomNumber() {
   return Math.floor(Math.random() * 900) + 100;
@@ -37,10 +33,7 @@ export function CustomerInfoCard(props) {
 
   const { pictures } = useOutletContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  // const mutation = useEditCustomer()
 
   if (customerStatus === "loading") {
     return (
@@ -51,7 +44,6 @@ export function CustomerInfoCard(props) {
   }
 
   if (customerStatus !== "loading" || customerStatus !== "error") {
-    console.log(`UserData:${{ data }}`);
     return (
       <Center py={6}>
         <Stack
@@ -112,71 +104,19 @@ export function CustomerInfoCard(props) {
                   onClick={onOpen}>
                   Edit
                 </Button>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
+                <Modal isOpen={isOpen} onClose={onClose} p={6}>
+                  <ModalOverlay opacity="0.9" filter={`blur("20px")`} />
                   <ModalContent>
                     <ModalHeader Center>Edit Customer Info</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                      {console.log(data)}
-                      <form
-                        id="customer-edit-form"
-                        onSubmit={handleSubmit}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "1rem",
-                        }}>
-                            <InputGroup>
-                        <InputLeftAddon children="First Name" />
-                        <Input
-                          value={`${data.firstName}`}
-                          type="text"
-                          placeholder="First Name"
-                          />
-                          </InputGroup>
-                        <InputGroup>
-                        <InputLeftAddon children="Last Name" />
-                        <Input
-                          value={`${data.lastName}`}
-                          type="text"
-                          placeholder="Last Name"
-                        />
-                        </InputGroup>
-                        
-                        <InputGroup>
-                        <InputLeftAddon children="Email" />
-                        <Input
-                          value={`${data.emailAddress}`}
-                          type="text"
-                          placeholder="Email"
-                        />
-                        </InputGroup>
-                        <InputGroup>
-                        <InputLeftAddon children="Address" />
-                        <Input
-                          value={`${data.address}`}
-                          type="text"
-                          placeholder="Address"
-                        />
-                        </InputGroup>
-                        <InputGroup>
-                        <InputLeftAddon children="Phone Number" />
-                        <Input
-                          value={`${data.phoneNumber}`}
-                          type="text"
-                          placeholder="Phone Number"
-                        />
-                        </InputGroup>
-                        <ButtonGroup>
-                        <Button type="submit" form="customer-edit-form">
-                          Save
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                        <Button onClick={onClose}>Delete</Button>
-
-                        </ButtonGroup>
-                      </form>
+                      <CustomerEditForm
+                        data={data}
+                        id={id}
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                      />
                     </ModalBody>
                   </ModalContent>
                 </Modal>

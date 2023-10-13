@@ -29,7 +29,6 @@ export function UserInfoCard(props) {
   }
 
   if (userStatus !== "loading" || userStatus !== "error") {
-    console.log(`UserData:${{data}}`);
     return (
       <Center py={6}>
         <Stack

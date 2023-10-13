@@ -12,9 +12,12 @@ const App = (props) => {
     <>
       <QueryClientProvider client={new QueryClient()}>
         <Header />
+        <Center>
+
         <Flex marginTop={"70px"} direction="column" w="1100px" alignItems={"space-around"}>
         <Outlet />
         </Flex>
+        </Center>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>

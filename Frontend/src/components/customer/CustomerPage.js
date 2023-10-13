@@ -1,22 +1,40 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import {
-  Box,
-  Flex,
-  Center,
-  Container,
+  Badge,
+  Button,
   Heading,
-  Skeleton,
+  Stack,
+  useColorModeValue,
+  Flex,
+  Image,
+  Center,
+  Text,
+  Box,
+  Spinner,
+  Modal,
+  ModalBody,
+  Container,
+  Spacer,
   SimpleGrid,
   GridItem,
-  Spacer,
+  ModalHeader,
+  ModalContent,
+  ModalOverlay,
+  ModalCloseButton,
+  useDisclosure,
+  Skeleton
 } from "@chakra-ui/react";
 import CustomerCard from "./CustomerCard";
 import { useGetCustomers, usePictures } from "../../hooks";
+import AddCustomerForm from "./AddCustomerForm";
+
 
 export function CustomerPage() {
   const { data: customers, status } = useGetCustomers();
   const { data: pictures, status: pictureStatus } = usePictures();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  
   let pictureURLList = [];
   if (pictureStatus === "success") {
     pictureURLList = pictures.results;
@@ -43,9 +61,43 @@ export function CustomerPage() {
     <>
       <Box>
         <Container size="lg" outline={true}>
-          <Center>
-            <Heading marginTop="85px" position={"fixed"}>Customer List</Heading>
-          </Center>
+          <Container size="lg" variant="outline" display={"flex"} outline={true} marginTop={"60px"} solid>
+            <Heading variant={'outline'}>Customer List</Heading> 
+            <Spacer />
+            <Button
+                  size="sm"
+                  flex={1}
+                  fontSize={"sm"}
+                  rounded={"full"}
+                  bg={"purple.400"}
+                  color={"white"}
+                  boxShadow={
+                    "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"
+                  }
+                  _hover={{
+                    bg: "purple.500",
+                  }}
+                  _focus={{
+                    bg: "purple.500",
+                  }}
+                  onClick={onOpen}>
+                  Add Customer
+                </Button>
+                <Modal isOpen={isOpen} onClose={onClose} p={6}>
+                  <ModalOverlay opacity="0.9" filter={`blur("20px")`} />
+                  <ModalContent>
+                    <ModalHeader Center>Add New Customer</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <AddCustomerForm
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                      />
+                    </ModalBody>
+                  </ModalContent>
+                </Modal>
+          </Container>
         </Container>
         <Flex marginBlock={20}>
           <SimpleGrid

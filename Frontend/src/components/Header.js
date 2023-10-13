@@ -34,7 +34,7 @@ function Header() {
               <LinkBox as={RouterLink} to="/">
                 🏠 Home
               </LinkBox>
-              <LinkBox as={RouterLink} to="/">
+              <LinkBox as={RouterLink} to="/tickets">
                 🎫 Tickets
               </LinkBox>
               <LinkBox as={RouterLink} to="/customers">

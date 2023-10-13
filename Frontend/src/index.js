@@ -13,6 +13,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {UserPage, UserInfoCard, } from "./components/User";
 import { CustomerPage, CustomerInfoCard } from "./components/Customer";
+import TicketPage from "./components/Ticket/TicketPage";
 const theme = extendTheme({
   config: {
     initialColorMode: "dark",
@@ -26,17 +27,15 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route id="users" path="/users" element={<UserPage />}>
           <Route path=":id" element={<UserInfoCard />} />
-        {/* <Route path="/users/:id/edit" element={<UserEditForm />} /> */}
         </Route>
         <Route path="/customers" element={<CustomerPage />}>
-          <Route path=":id" element={<CustomerInfoCard />} />
-          
+          <Route path=":id" element={<CustomerInfoCard />} />          
           </Route>
 
 
 
 
-        {/* <Route path="/tickets" element={<ErrorPage />} /> */}
+        <Route path="/tickets" element={<TicketPage />} />
       </Route>
     </>,
   ),
