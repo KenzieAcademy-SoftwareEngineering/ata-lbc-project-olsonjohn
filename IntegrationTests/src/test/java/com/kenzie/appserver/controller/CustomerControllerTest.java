@@ -80,9 +80,9 @@ public class CustomerControllerTest {
         CustomerResponse customerResponse = mapper.readValue(jsonResponse, CustomerResponse.class);
         String id = customerResponse.getId();
 
-        mvc.perform(delete("customer/{id}", id)
+        mvc.perform(delete("/customer/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -119,9 +119,9 @@ public class CustomerControllerTest {
                         .value(is(phoneNumber)))
                 .andExpect(status().isOk());
 
-        mvc.perform(delete("customer/{id}", id)
+        mvc.perform(delete("/customer/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -169,12 +169,12 @@ public class CustomerControllerTest {
         List<CustomerResponse> responses = mapper.readValue(responseBody, new TypeReference<List<CustomerResponse>>(){});
         assertThat(responses.size()).isEqualTo(numOfCustomers);
 
-        mvc.perform(delete("customer/{id}", id1)
+        mvc.perform(delete("/customer/{id}", id1)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-        mvc.perform(delete("customer/{id}", id2)
+                .andExpect(status().isOk());
+        mvc.perform(delete("/customer/{id}", id2)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -227,9 +227,9 @@ public class CustomerControllerTest {
                         .value(is(newPhoneNumber)))
                 .andExpect(status().isOk());
 
-        mvc.perform(delete("customer/{id}", id)
+        mvc.perform(delete("/customer/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
