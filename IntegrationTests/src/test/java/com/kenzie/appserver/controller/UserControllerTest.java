@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class UserControllerTest {
         userCreateRequest.setUserNumber(num);
 
         mapper.registerModule(new JavaTimeModule());
-        mvc.perform(post("/user")
+        MvcResult result = mvc.perform(post("/user")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(userCreateRequest)))
@@ -58,7 +59,27 @@ public class UserControllerTest {
                         .value(is(name)))
                 .andExpect(jsonPath("userNumber")
                         .value(is("1")))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString();
+        UserResponse userResponse = mapper.readValue(jsonResponse, UserResponse.class);
+        String id = userResponse.getUserId();
+
+        mvc.perform(delete("/user/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void addNewUser_invalidUser_statusCode400() throws Exception {
+        UserCreateRequest userCreateRequest = null;
+
+        mapper.registerModule(new JavaTimeModule());
+        mvc.perform(post("/user")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -78,6 +99,10 @@ public class UserControllerTest {
                         .value(is(name)))
                 .andExpect(jsonPath("userNumber")
                         .value(is(num)))
+                .andExpect(status().isOk());
+
+        mvc.perform(delete("/user/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -105,6 +130,13 @@ public class UserControllerTest {
         String responseBody = actions.andReturn().getResponse().getContentAsString();
         List<UserResponse> responses = mapper.readValue(responseBody, new TypeReference<List<UserResponse>>(){});
         assertThat(responses.size()).isEqualTo(numOfUsers);
+
+        mvc.perform(delete("/user/{id}", id1)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        mvc.perform(delete("/user/{id}", id2)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -132,6 +164,10 @@ public class UserControllerTest {
                         .value(is(newName)))
                 .andExpect(jsonPath("userNumber")
                         .exists())
+                .andExpect(status().isOk());
+
+        mvc.perform(delete("/user/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 

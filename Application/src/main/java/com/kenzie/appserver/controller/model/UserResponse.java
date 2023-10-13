@@ -42,7 +42,7 @@ public class UserResponse {
         return userId;
     }
 
-    public void setUserId(String id) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 }
