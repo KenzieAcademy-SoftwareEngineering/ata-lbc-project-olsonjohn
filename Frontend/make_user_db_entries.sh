@@ -39,7 +39,7 @@ generate_random_number() {
 }
 
 # Loop to send 25 POST requests
-for ((i=1; i<=25; i++)); do
+for ((i=1; i<=5; i++)); do
     random_name="$(generate_random_name)"
     random_number="$(generate_random_number)"
 

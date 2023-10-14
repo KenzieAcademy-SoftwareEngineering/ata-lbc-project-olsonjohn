@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {UserPage, UserInfoCard, } from "./components/User";
 import { CustomerPage, CustomerInfoCard } from "./components/Customer";
 import TicketPage from "./components/Ticket/TicketPage";
+import TicketInfoCard from "./components/Ticket/TicketInfoCard";
 const theme = extendTheme({
   config: {
     initialColorMode: "dark",
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
 
 
         <Route path="/tickets" element={<TicketPage />} />
+        <Route path="/tickets/:id" element={<TicketInfoCard />} />
       </Route>
     </>,
   ),

@@ -1,48 +1,83 @@
-import { Center, Divider,Tabs, TabList, TabPanel, Tab, Box, Heading, TabPanels } from "@chakra-ui/react";
+import {
+  Center,
+  Divider,
+  Tabs,
+  TabList,
+  TabPanel,
+  Tab,
+  Box,
+  Heading,
+  TabPanels,
+  Skeleton,
+  Stack, StackDivider, background
+} from "@chakra-ui/react";
 import React from "react";
+import {useGetTickets} from "../../hooks";
+import TicketCard from "./TicketCard";
 
 function TicketPage() {
+
+  const {data: tickets, status, setStatusFilter} = useGetTickets();
+
+  const ticketStatusValues = ["new", "in progress", "completed"];
+
+  const [tabIndex, setTabIndex] = React.useState(0)
+
+  //setStatusFilter(ticketStatusValues[tabIndex]);
+
+
   return (
     <>
       <Box>
         <Center>
-
-        <Heading>Tickets</Heading>
+          <Heading>Tickets</Heading>
         </Center>
-        <Divider />
-        <Tabs size="lg" m="2" variant="enclosed" isFitted>
-          <TabList color="black"size="lg">
+        <Tabs size="md" isFitted align="center" m={5}  defaultIndex={0}
+              onChange={(index) => setTabIndex(index)}>
+          <TabList color="blackAlpha.300" gap={35}  size="md" _dark={{textColor: "whiteAlpha.300"}}>
             <Tab
-              bgColor={"#e5e5e5"}
-              _selected={{ color: "black", bg: "green" }}
-              _focus={{ boxShadow: "lg" }}>
+              _selected={{color: "black", bg: "green.500"}}
+              _focus={{boxShadow: "dark-lg"}}
+              borderRadius="15px">
               New Ticket
             </Tab>
             <Tab
-              bgColor={"#e5e5e5"}
-              _selected={{ color: "black", bg: "yellow" }}
-              _focus={{ boxShadow: "lg" }}>
+              _selected={{color: "black", bg: "yellow.200"}}
+              _focus={{boxShadow: "dark-lg"}}
+              borderRadius="15px">
               In Progress Tickets
-            </Tab>{" "}
+            </Tab>
             <Tab
-              bgColor={"#e5e5e5"}
-              _selected={{ color: "black", bg: "brown" }}
-              _focus={{ boxShadow: "lg" }}>
-              Completed Tickets{" "}
+              _selected={{color: "black", bg: "teal.200"}}
+              _focus={{boxShadow: "dark-lg"}}
+              borderRadius="15px">
+              Completed Tickets
             </Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-                New
+              <Skeleton isLoaded={status != "loading" ? true : false}>
+                <Stack divider={<StackDivider borderColor='gray.50'/>}>
+                  {tickets ? tickets.map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
+                </Stack>
+              </Skeleton>
             </TabPanel>
             <TabPanel>
-                In Progress
+              <Skeleton isLoaded={status != "loading" ? true : false}>
+              <Stack divider={<StackDivider borderColor='gray.50'/>}>
+                {tickets ? tickets.map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
+              </Stack>
+            </Skeleton>
             </TabPanel>
             <TabPanel>
-                Completed
+              <Skeleton isLoaded={status != "loading" ? true : false}>
+                <Stack divider={<StackDivider borderColor='gray.50'/>}>
+                  {tickets ? tickets.map((ticket) => <TicketCard key={ticket.ticketId} ticket={ticket}/>) : null}
+                </Stack>
+              </Skeleton>
             </TabPanel>
-          
-          
+
+
           </TabPanels>
         </Tabs>
       </Box>
