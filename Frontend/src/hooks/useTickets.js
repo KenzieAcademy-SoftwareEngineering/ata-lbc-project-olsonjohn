@@ -1,54 +1,82 @@
 import axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {React, useCallback, useState} from 'react';
 
-const getTickets = async (id) => {
+export const getTickets = async (id) => {
   const response = await axios
     .get("http://localhost:5001/ticket/all")
     .then((response) => response.data);
+
   return response;
 };
-const getTicket = async (id) => {
+export const getTicket = async (id) => {
   const response = await axios
     .get(`http://localhost:5001/ticket/${id}`)
     .then((response) => response.data);
   return response;
 };
 
-const addTicket = async (data) => {
+export const addTicket = async (data) => {
+  console.log({data})
   const response = await axios
     .post("http://localhost:5001/ticket", data)
     .then((response) => response.data);
   return response;
 };
 
-const editTicket = async ({ id, data }) => {
+const editTicket = async ({id, data}) => {
   const response = await axios
     .put(`http://localhost:5001/ticket/${id}`, data)
     .then((response) => response.data);
   return response;
 };
 
+export const deleteTicket = async (id) => {
+  const response = await axios
+  .delete(`http://localhost:5001/ticket/${id}`)
+  .then((response) => response.data)
+  return response
+}
+
+export const changeTicketStatus = async (id, ticket) => {
+  const response = await axios
+  .put(`http://localhost:5001/ticket/${id}`, ticket)
+  .then(response => response.data)
+  return response
+}
+
 export const useGetTickets = () => {
-  return useQuery({ queryKey: ["tickets"], queryFn: getTickets });
-};
+  const [statusFilter, setStatusFilter] = useState("new");
+  const filterTickets = (data)=> {
+      if (statusFilter) {
+        return data.data.filter((ticket) => {
+          console.log(ticket)
+          return ticket.status === statusFilter;
+        })
+      }
+      return data;
+    }
 
-export const useGetTicket = (id) => {
-  return useQuery({ queryKey: ["tickets", id], queryFn: () => getTicket(id) });
-};
+  return useQuery({queryKey: ["tickets"], queryFn: getTickets});
 
-export const useAddTicket = (data) => {
-  const queryClient = useQueryClient();
+}
+  export const useGetTicket = (id) => {
+    return useQuery({queryKey: ["tickets", id], queryFn: () => getTicket(id)});
+  };
 
-  return useMutation({
-    mutationFn: (newTicket) => addTicket(newTicket),
-    onSuccess: () => queryClient.invalidateQueries(["tickets"]),
-  });
-};
+  export const useAddTicket = (data) => {
+    const queryClient = useQueryClient();
 
-export const useEditTicket = ({ id, data }) => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (newTicket) => editTicket({ id, data: newTicket }),
-    onSuccess: () => queryClient.invalidateQueries(["tickets"]),
-  });
-};
+    return useMutation({
+      mutationFn: (newTicket) => addTicket(newTicket),
+      onSuccess: () => queryClient.invalidateQueries(["tickets"]),
+    });
+  };
+
+  export const useEditTicket = ({id, data}) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: (newTicket) => editTicket({id, data: newTicket}),
+      onSuccess: () => queryClient.invalidateQueries(["tickets"]),
+    });
+  };

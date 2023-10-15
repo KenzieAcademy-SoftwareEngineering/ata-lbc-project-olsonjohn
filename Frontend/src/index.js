@@ -14,10 +14,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {UserPage, UserInfoCard, } from "./components/User";
 import { CustomerPage, CustomerInfoCard } from "./components/Customer";
 import TicketPage from "./components/Ticket/TicketPage";
+import TicketInfoCard from "./components/Ticket/TicketInfoCard";
+import AddTicketForm from "./components/Ticket/AddTicketForm";
+import {  MultiSelectTheme } from 'chakra-multiselect'
+
 const theme = extendTheme({
   config: {
     initialColorMode: "dark",
-  },
+  }, components: {
+    MultiSelect: MultiSelectTheme
+  }
 });
 
 const router = createBrowserRouter(
@@ -36,6 +42,8 @@ const router = createBrowserRouter(
 
 
         <Route path="/tickets" element={<TicketPage />} />
+        <Route path="/tickets/:id" element={<TicketInfoCard />} />
+        <Route path="/tickets/add" element={<AddTicketForm />} />
       </Route>
     </>,
   ),
@@ -45,13 +53,13 @@ const app = document.getElementById("app");
 
 const root = createRoot(app);
 
+
 root.render(
   <ChakraProvider theme={theme}>
-    <QueryClientProvider client={new QueryClient()}>
       <RouterProvider
         router={router}
         fallbackElement={<ErrorPage />}
       ></RouterProvider>
-    </QueryClientProvider>
   </ChakraProvider>,
 );
+

@@ -21,7 +21,7 @@ public class TicketResponse {
     private ZonedDateTime createdAt;
     @JsonProperty("finished")
     private ZonedDateTime finishedAt;
-    @JsonProperty("status")
+    @JsonProperty("ticketStatus")
     private TicketStatus ticketStatus;
     @JsonProperty("customerId")
     private String customerId;

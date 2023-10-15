@@ -8,12 +8,23 @@ import "./css/style.css"
 
 
 const App = (props) => {
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+        cacheTime: Infinity,
+      },
+    },
+  })
+
+
+  
   return (
     <>
-      <QueryClientProvider client={new QueryClient()}>
+      <QueryClientProvider client={queryClient}>
         <Header />
         <Center>
-
         <Flex marginTop={"70px"} direction="column" w="1100px" alignItems={"space-around"}>
         <Outlet />
         </Flex>

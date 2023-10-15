@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const getCustomers = async () => {
+export const getCustomers = async () => {
   const response = await axios
     .get("http://localhost:5001/customer/all")
     .then((response) => response.data);
   return response;
 };
-const getCustomer = async (id) => {
+export const getCustomer = async (id) => {
   const response = await axios
     .get(`http://localhost:5001/customer/${id}`)
     .then((response) => response.data);
@@ -61,3 +61,9 @@ export const useEditCustomer = ({id, data }) => {
   });
 return mutate
 };
+
+
+export const usePrefetchCustomer = async (id) => {
+  const queryClient = useQueryClient();
+  await queryClient.prefetchQuery({ queryKey: ["customers", id], queryFn: () => getCustomer(id) })
+}

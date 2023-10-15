@@ -6,6 +6,7 @@ import com.kenzie.appserver.repositories.model.TicketRecord;
 import com.kenzie.appserver.repositories.model.TicketStatus;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,7 +71,12 @@ public class Ticket {
         this.ticketDescription = ticketCreateRequest.getTicketDescription();
         this.createdAt = ZonedDateTime.now();
         this.customerId = ticketCreateRequest.getCustomerId();
-        this.users = ticketCreateRequest.getUsers();
+        this.ticketStatus = TicketStatus.NEW;
+        if (ticketCreateRequest.getUsers() == null) {
+            this.users = new ArrayList<>();
+        } else {
+            this.users = ticketCreateRequest.getUsers();
+    }
     }
 
     public Ticket(TicketUpdateRequest ticketUpdateRequest) {

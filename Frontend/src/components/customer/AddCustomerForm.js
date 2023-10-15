@@ -10,7 +10,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { addCustomer } from "../../hooks";
-export default function CustomerEditForm(props) {
+export default function AddCustomerForm(props) {
   const { onClose } = props;
   const queryClient = useQueryClient();
  const navigate = useNavigate();
