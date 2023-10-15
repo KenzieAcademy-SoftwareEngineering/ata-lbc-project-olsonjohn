@@ -73,21 +73,21 @@ function TicketPage() {
             <TabPanel>
               <Skeleton isLoaded={status !== "loading" ? true : false}>
                 <Stack divider={<StackDivider borderColor='gray.50'/>}>
-                  {tickets ? tickets.filter((ticket) => ticket.status === "NEW").map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
+                  {tickets ? tickets.filter((ticket) => ticket.ticketStatus === "NEW").map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
                 </Stack>
               </Skeleton>
             </TabPanel>
             <TabPanel>
               <Skeleton isLoaded={status !== "loading" ? true : false}>
               <Stack divider={<StackDivider borderColor='gray.50'/>}>
-                {tickets ? tickets.filter((ticket) => ticket.status === "IN_PROGRESS").map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
+                {tickets ? tickets.filter((ticket) => ticket.ticketStatus === "IN_PROGRESS").map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
               </Stack>
             </Skeleton>
             </TabPanel>
             <TabPanel>
               <Skeleton isLoaded={status !== "loading" ? true : false}>
                 <Stack divider={<StackDivider borderColor='gray.50'/>}>
-                  {tickets ? tickets.filter((ticket) => ticket.status === "COMPLETED").map((ticket) => <TicketCard key={ticket.ticketId} ticket={ticket}/>) : null}
+                  {tickets ? tickets.filter((ticket) => ticket.ticketStatus === "COMPLETED").map((ticket) => <TicketCard key={ticket.ticketId} ticket={ticket}/>) : null}
                 </Stack>
               </Skeleton>
             </TabPanel>

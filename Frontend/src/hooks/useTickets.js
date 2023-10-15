@@ -31,6 +31,20 @@ const editTicket = async ({id, data}) => {
   return response;
 };
 
+export const deleteTicket = async (id) => {
+  const response = await axios
+  .delete(`http://localhost:5001/ticket/${id}`)
+  .then((response) => response.data)
+  return response
+}
+
+export const changeTicketStatus = async (id, ticket) => {
+  const response = await axios
+  .put(`http://localhost:5001/ticket/${id}`, ticket)
+  .then(response => response.data)
+  return response
+}
+
 export const useGetTickets = () => {
   const [statusFilter, setStatusFilter] = useState("new");
   const filterTickets = (data)=> {
@@ -42,15 +56,6 @@ export const useGetTickets = () => {
       }
       return data;
     }
-  //
-  // const {
-  //   data,
-  //   status
-  // } = useQuery({queryKey: ["tickets"], queryFn: getTickets, select: filterTickets});
-  //
-  // return {
-  //   data, status, setStatusFilter
-  // };
 
   return useQuery({queryKey: ["tickets"], queryFn: getTickets});
 

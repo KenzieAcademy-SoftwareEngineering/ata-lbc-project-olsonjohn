@@ -1,6 +1,6 @@
 import React, {useMemo, useState}from 'react';
-import {NavLink, useParams, useLocation} from 'react-router-dom';
-import {useGetCustomer, useGetTicket, useGetUser} from "../../hooks";
+import {NavLink, useParams, useNavigate, useLocation} from 'react-router-dom';
+import {changeTicketStatus, useGetCustomer, useGetTicket,deleteTicket, useGetUser} from "../../hooks";
 import {
   Skeleton,
   Card,
@@ -39,13 +39,17 @@ import {IoArrowBackOutline} from "react-icons/io5";
 import dayjs from "dayjs";
 import TicketInfoDivCard from "./TicketInfoDivCard";
 import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
-
+import { useMutation } from '@tanstack/react-query';
+import ChangeTicketStatusModal from './ChangeTicketStatusModal';
 
 const TicketInfoCard = () => {
+
+
   const {id} = useParams()
   const {data: ticket, status} = useGetTicket(id);
-
+  const navigate = useNavigate();
 
   function useGetSearchParams() {
     const { search } = useLocation();
@@ -58,6 +62,8 @@ const TicketInfoCard = () => {
   const ticketStatus = searchParams.get('ticketStatus')
   const userId = searchParams.get('userId')
   
+  const [isTicketStatusModalOpen, setTicketStatusModalOpen] = useState(false);
+
   const steps = [
     { title: 'New Ticket', description: '' },
     { title: 'In Progress', description: '' },
@@ -79,6 +85,19 @@ const TicketInfoCard = () => {
     setActiveStep(statusIndex)
   }, [ticketStatus, setActiveStep, ticketStatusList, activeStep])
 
+  const queryClient = useQueryClient();
+
+
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => {
+      deleteTicket(id)        
+    },
+    onSuccess: (id) => {
+      queryClient.invalidateQueries(["tickets", id])
+      navigate("/tickets", {replace: true})
+    }
+  })
  
   
   if ((status !== "loading"|| customerStatus !== "loading" ) && (status === "success" && customerStatus === "success") && userStatus === "success") {
@@ -96,20 +115,32 @@ const TicketInfoCard = () => {
       "Description: ": ticket.description,
     }
 
+   const handleDelete = (event) => {
+event.preventDefault()
+deleteMutation.mutate(id)
+   }
 
     return (
       <Skeleton isLoaded={status === 'success' || customerStatus === 'success'}>
 
         <Flex direction={"column"}>
           <Flex minwidth='max-content' p={15} m={15} alignItems='center' gap='2'>
-            <IconButton size="lg" as={NavLink} to={"/tickets"} variant={"outline"} colorScheme={"teal"}
-                        aria-label={"Back"} icon={<IoArrowBackOutline/>}/>
+            <Button leftIcon={<IoArrowBackOutline/>} size="lg" as={NavLink} to={"/tickets"} variant={"outline"} colorScheme={"teal"}
+                        aria-label={"Back"}> Back</Button>
             <Spacer/>
             <ButtonGroup>
-              <Button variant={"outline"} colorScheme={"teal"} size={"sm"}>
+            <Button  variant={"outline"} colorScheme={"cyan"} size={"lg"} onClick={()=> setTicketStatusModalOpen(true)}>
+                Change Status
+              </Button>
+              <ChangeTicketStatusModal
+              isOpen={isTicketStatusModalOpen}
+              onClose={() => setTicketStatusModalOpen(false)}
+              ticket = {ticket}
+              />
+              <Button isDisabled variant={"outline"} colorScheme={"teal"} size={"lg"}>
                 Edit
               </Button>
-              <Button variant={"outline"} colorScheme={"teal"} size={"sm"}>
+              <Button variant={"outline"} colorScheme={"red"} size={"lg"} onClick={handleDelete}>
                 Delete
               </Button>
 

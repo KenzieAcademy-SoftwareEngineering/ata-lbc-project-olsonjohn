@@ -80,7 +80,6 @@ useEffect( () => {
     <p>An error occurred while loading customers. Please try again later.</p>
     </>
     }
-
     if (customerStatus === "loading") {
       return <h1>Loading...</h1>
     }
