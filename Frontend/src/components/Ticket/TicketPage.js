@@ -1,19 +1,25 @@
 import {
   Center,
-  Divider,
   Tabs,
   TabList,
   TabPanel,
   Tab,
+  HStack,
+  Button,
   Box,
   Heading,
   TabPanels,
   Skeleton,
-  Stack, StackDivider, background
+  Stack, 
+  StackDivider, 
+  Spacer
 } from "@chakra-ui/react";
-import React from "react";
+import React, {useState} from "react";
 import {useGetTickets} from "../../hooks";
 import TicketCard from "./TicketCard";
+import {NavLink} from "react-router-dom";
+
+
 
 function TicketPage() {
 
@@ -26,11 +32,20 @@ function TicketPage() {
   //setStatusFilter(ticketStatusValues[tabIndex]);
 
 
+  const [newTicket, setNewTickets] = useState([]);
+
+
+
+
   return (
     <>
       <Box>
         <Center>
+          <HStack>
           <Heading>Tickets</Heading>
+          <Spacer />
+            <Button size='lg' as={NavLink} to="/tickets/add"> Add Ticket </Button>
+          </HStack>
         </Center>
         <Tabs size="md" isFitted align="center" m={5}  defaultIndex={0}
               onChange={(index) => setTabIndex(index)}>
@@ -56,23 +71,23 @@ function TicketPage() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Skeleton isLoaded={status != "loading" ? true : false}>
+              <Skeleton isLoaded={status !== "loading" ? true : false}>
                 <Stack divider={<StackDivider borderColor='gray.50'/>}>
-                  {tickets ? tickets.map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
+                  {tickets ? tickets.filter((ticket) => ticket.status === "NEW").map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
                 </Stack>
               </Skeleton>
             </TabPanel>
             <TabPanel>
-              <Skeleton isLoaded={status != "loading" ? true : false}>
+              <Skeleton isLoaded={status !== "loading" ? true : false}>
               <Stack divider={<StackDivider borderColor='gray.50'/>}>
-                {tickets ? tickets.map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
+                {tickets ? tickets.filter((ticket) => ticket.status === "IN_PROGRESS").map((ticket) => <TicketCard  key={ticket.ticketId} ticket={ticket}/>) : null}
               </Stack>
             </Skeleton>
             </TabPanel>
             <TabPanel>
-              <Skeleton isLoaded={status != "loading" ? true : false}>
+              <Skeleton isLoaded={status !== "loading" ? true : false}>
                 <Stack divider={<StackDivider borderColor='gray.50'/>}>
-                  {tickets ? tickets.map((ticket) => <TicketCard key={ticket.ticketId} ticket={ticket}/>) : null}
+                  {tickets ? tickets.filter((ticket) => ticket.status === "COMPLETED").map((ticket) => <TicketCard key={ticket.ticketId} ticket={ticket}/>) : null}
                 </Stack>
               </Skeleton>
             </TabPanel>

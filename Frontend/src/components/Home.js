@@ -1,20 +1,19 @@
 import React from "react";
 import {Box, CardHeader, Container, Center, Text, Card, Flex, CardBody, Divider} from "@chakra-ui/react";
-import {useGetTickets} from "../hooks";
+import {useGetCustomers, useGetTickets, useGetUser, useGetUsers} from "../hooks";
 import * as PropTypes from "prop-types";
 
 
 function Home() {
 
   const {data: ticketData, status: ticketStatus} = useGetTickets()
+  // const {data: newTicketData, status: newTicketStatus} = useGetTickets(["NEW"])
+const {data: customerData, status: customerStatus } = useGetCustomers()
+const {data: userData, status: userStatus } = useGetUsers()
+
 
   if (ticketStatus === "loading") return <h1>Loading...</h1>
   if (ticketStatus === "error") return <h1>Error</h1>
-
-  const bleh = (ticketData) => {
-    ticketData.filter((ticket) => ticket.status === "NEW").length
-
-  }
 
   const body = document.querySelector("body")
   body.style.backgroundColor = "rgba(151,181,171,.15)"

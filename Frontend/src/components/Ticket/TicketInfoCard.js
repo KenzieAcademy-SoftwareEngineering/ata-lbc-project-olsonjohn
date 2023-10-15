@@ -1,6 +1,6 @@
 import React, {useMemo, useState}from 'react';
 import {NavLink, useParams, useLocation} from 'react-router-dom';
-import {useGetCustomer, useGetTicket} from "../../hooks";
+import {useGetCustomer, useGetTicket, useGetUser} from "../../hooks";
 import {
   Skeleton,
   Card,
@@ -30,6 +30,7 @@ import {
   Box,
   StepTitle,
   StepDescription,
+
   StepSeparator,
 } from "@chakra-ui/react";
 import {AiFillFileText} from "react-icons/ai";
@@ -37,6 +38,7 @@ import {LuFileQuestion} from "react-icons/lu";
 import {IoArrowBackOutline} from "react-icons/io5";
 import dayjs from "dayjs";
 import TicketInfoDivCard from "./TicketInfoDivCard";
+import { useEffect } from 'react';
 
 
 
@@ -45,33 +47,45 @@ const TicketInfoCard = () => {
   const {data: ticket, status} = useGetTicket(id);
 
 
-  function getSearchParams() {
+  function useGetSearchParams() {
     const { search } = useLocation();
     return useMemo(() => new URLSearchParams(search), [search]);
   }
 
-  const searchParams = getSearchParams();
-  const customerId = Object.entries(searchParams.getAll('customerId'))[0][1]
-
-  const {data: customer, status: customerStatus} = useGetCustomer(customerId);
-
-
-
+  const searchParams = useGetSearchParams();
+  console.log(searchParams)
+  const customerId = searchParams.get('customerId')
+  const ticketStatus = searchParams.get('ticketStatus')
+  const userId = searchParams.get('userId')
+  
   const steps = [
     { title: 'New Ticket', description: '' },
     { title: 'In Progress', description: '' },
     { title: 'Completed', description: '' },
   ]
 
-  const { activeStep } = useSteps({ index: 1,  count: steps.length })
- const ticketStatusList = ["NEW", "In Progress", "Completed"]
+
+  const {data: customer, status: customerStatus} = useGetCustomer(customerId);
+  const {data: userData, status: userStatus} = useGetUser(userId);
+  
+  
+  const ticketStatusList = useMemo(() => ["NEW", "IN_PROGRESS", "COMPLETED"], [])
+  const statusIndex = ticketStatusList.indexOf(ticketStatus)  
+  const {activeStep, setActiveStep } = useSteps({ index: statusIndex, count: steps.length})
+
+  useEffect(() => {
+    console.log(activeStep)
+    const statusIndex = ticketStatusList.indexOf(ticketStatus)  
+    setActiveStep(statusIndex)
+  }, [ticketStatus, setActiveStep, ticketStatusList, activeStep])
+
+ 
+  
+  if ((status !== "loading"|| customerStatus !== "loading" ) && (status === "success" && customerStatus === "success") && userStatus === "success") {
+  
+  
 
 
-  if (status === "error") {
-    return <p>Error</p>
-  }
-
-  if (status !== "loading"|| customerStatus !== "loading") {
   console.log(customer)
 
     const info = {
@@ -84,11 +98,11 @@ const TicketInfoCard = () => {
 
 
     return (
-      <Skeleton isLoaded={status !== "loading"|| customerStatus !== "loading"}>
+      <Skeleton isLoaded={status === 'success' || customerStatus === 'success'}>
 
         <Flex direction={"column"}>
           <Flex minwidth='max-content' p={15} m={15} alignItems='center' gap='2'>
-            <IconButton size="lg" as={NavLink} to={"/tickets"} variant={"outline"} colorScheme={"teal"} size={"sm"}
+            <IconButton size="lg" as={NavLink} to={"/tickets"} variant={"outline"} colorScheme={"teal"}
                         aria-label={"Back"} icon={<IoArrowBackOutline/>}/>
             <Spacer/>
             <ButtonGroup>
@@ -130,7 +144,7 @@ const TicketInfoCard = () => {
               </CardHeader>
               <Divider/>
               <CardBody  display={'flex'} flexDirection={'column'} h={"max-content"}>
-            <Stepper  index={ticketStatusList.indexOf(ticket.status) + 1 } m={5}>
+            <Stepper  index={statusIndex+1} m={5}>
               {steps.map((step, index) => (
                 <Step key={index}>
                   <StepIndicator>
@@ -215,33 +229,6 @@ const TicketInfoCard = () => {
                               value={customer.phoneNumber}
                             />
                           </InputGroup>
-                          {/*<ButtonGroup>*/}
-
-                          {/*  <Spacer />*/}
-                          {/*  <Button*/}
-                          {/*    size="sm"*/}
-                          {/*    flex={1}*/}
-                          {/*    fontSize={"sm"}*/}
-                          {/*    rounded={"full"}*/}
-                          {/*    bg={"green.400"}*/}
-                          {/*    color={"white"}*/}
-                          {/*    boxShadow={*/}
-                          {/*      "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"*/}
-                          {/*    }*/}
-                          {/*    _hover={{*/}
-                          {/*      bg: "green.500",*/}
-                          {/*    }}*/}
-                          {/*    _focus={{*/}
-                          {/*      bg: "green.500",*/}
-                          {/*    }}*/}
-                          {/*    colorScheme="green"*/}
-
-                          {/*    variant="solid"*/}
-                          {/*    type="submit"*/}
-                          {/*    form="customer-add-form">*/}
-                          {/*    Save*/}
-                          {/*  </Button>*/}
-                          {/*</ButtonGroup>*/}
                         </form>
                       </CardBody>
                     </Card>
@@ -254,8 +241,8 @@ const TicketInfoCard = () => {
                       <Divider/>
                       <CardBody>
                         <Flex direction={'column'}>
-                          <Text>User Name: BatMan </Text>
-                          <Text>User Number: 1000 </Text>
+                          <Text>`User Name: {userData.name}` </Text>
+                          <Text>`User Number: {userData.userNumber}` </Text>
                         </Flex>
                       </CardBody>
                     </Card>

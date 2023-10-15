@@ -2,21 +2,22 @@ import axios from "axios";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {React, useCallback, useState} from 'react';
 
-const getTickets = async (id) => {
+export const getTickets = async (id) => {
   const response = await axios
     .get("http://localhost:5001/ticket/all")
     .then((response) => response.data);
 
   return response;
 };
-const getTicket = async (id) => {
+export const getTicket = async (id) => {
   const response = await axios
     .get(`http://localhost:5001/ticket/${id}`)
     .then((response) => response.data);
   return response;
 };
 
-const addTicket = async (data) => {
+export const addTicket = async (data) => {
+  console.log({data})
   const response = await axios
     .post("http://localhost:5001/ticket", data)
     .then((response) => response.data);

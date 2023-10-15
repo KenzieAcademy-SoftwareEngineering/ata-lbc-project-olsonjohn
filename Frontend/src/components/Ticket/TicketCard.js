@@ -21,14 +21,16 @@ import {AiFillFileText} from 'react-icons/ai'
 import {LuFileQuestion} from 'react-icons/lu'
 import dayjs from 'dayjs'
 import {NavLink} from "react-router-dom";
+import { usePrefetchCustomer,getTicket, getCustomer } from "../../hooks";
+import { useQueryClient } from "@tanstack/react-query";
 
 const TicketCard = (props) => {
 
   const {ticket} = props;
-
+  const queryClient = useQueryClient();
   return (<Card
       as={NavLink}
-      to={`/tickets/${ticket.ticketId}?customerId=${ticket.customerId}`}
+      to={`/tickets/${ticket.ticketId}?customerId=${ticket.customerId}&userId=${ticket.users[0]}&ticketStatus=${ticket.status}`}
       key={ticket.ticketId}
       variant="elevated"
       boxShadow={"dark-lg"}
@@ -36,6 +38,10 @@ const TicketCard = (props) => {
       p={1.5}
       _dark={{textColor: "teal.200", backgroundColor: "cyan.800", boxShadow: "dark-lg "}}
       _light={{textColor: "teal.300", backgroundColor: "cyan.50"}}
+      onMouseEnter={async () => {
+        await queryClient.prefetchQuery({ queryKey: ["customers", ticket.customerId], queryFn: () => getCustomer(ticket.customerId) })
+        await queryClient.prefetchQuery({ queryKey: ["ticket", ticket.ticketId], queryFn: () => getTicket(ticket.ticketId) })
+      }}
     >
       <CardHeader p={.5}>
         <Flex gap={3} justifyContent="space-between" alignItems="center" p={1}>
