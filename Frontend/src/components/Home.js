@@ -52,7 +52,33 @@ const {data: userData, status: userStatus } = useGetUsers()
               </CardHeader>
               <Divider/>
               <CardBody p={.5}>
-                <Text>{ticketData.filter((ticket) => ticket.status === "NEW").length}</Text>
+                <Text>{ticketData.filter((ticket) => ticket.ticketStatus === "NEW").length}</Text>
+              </CardBody>
+            </Center>
+          </Card>
+        </Container>
+        <Container boxShadow="dark-lg" p='4' w={'max-content'} size={'sm'} rounded={'20px'}>
+          <Card p={2}>
+            <Center flexDirection={'column'}>
+              <CardHeader p={2}>
+                <Text>In Progress</Text>
+              </CardHeader>
+              <Divider/>
+              <CardBody p={.5}>
+                <Text>{ticketData.filter((ticket) => ticket.ticketStatus === "IN_PROGRESS").length}</Text>
+              </CardBody>
+            </Center>
+          </Card>
+        </Container>
+        <Container boxShadow="dark-lg" p='4' w={'max-content'} size={'sm'} rounded={'20px'}>
+          <Card p={2}>
+            <Center flexDirection={'column'}>
+              <CardHeader p={2}>
+                <Text >Completed</Text>
+              </CardHeader>
+              <Divider/>
+              <CardBody p={.5}>
+                <Text>{ticketData.filter((ticket) => ticket.ticketStatus === "COMPLETED").length}</Text>
               </CardBody>
             </Center>
           </Card>

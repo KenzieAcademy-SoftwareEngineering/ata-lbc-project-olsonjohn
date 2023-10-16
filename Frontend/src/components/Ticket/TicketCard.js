@@ -30,7 +30,7 @@ const TicketCard = (props) => {
   const queryClient = useQueryClient();
   return (<Card
       as={NavLink}
-      to={`/tickets/${ticket.ticketId}?customerId=${ticket.customerId}&userId=${ticket.users[0]}&ticketStatus=${ticket.status}`}
+      to={`/tickets/${ticket.ticketId}?customerId=${ticket.customerId}&userId=${ticket.users[0]}&ticketStatus=${ticket.ticketStatus}`}
       key={ticket.ticketId}
       variant="elevated"
       boxShadow={"dark-lg"}

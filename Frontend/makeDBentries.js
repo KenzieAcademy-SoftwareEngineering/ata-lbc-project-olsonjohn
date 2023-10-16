@@ -187,7 +187,7 @@ async function sendPostRequests() {
 
   // Sending 5 customer POST requests
   for (let i = 0; i < NumOfCustomers; i++) {
-    const randomName = generateRandomName();
+    const randomName = names[Math.floor(Math.random() * names.length)];
     const randomLastName =
       lastNames[Math.floor(Math.random() * lastNames.length)];
     const randomAddress = generateRandomAddress();
@@ -529,7 +529,7 @@ const sendTicketRequests = async () => {
 
 
 const updateTicketStatus = async (ticketList) => {
-  const ticketsToUpdate = getRandomItemsFromArray(ticketList, 0.2);
+  const ticketsToUpdate = getRandomItemsFromArray(ticketList, 0.4);
 
   const ticketStatusList = ["IN_PROGRESS", "COMPLETED"];
   console.log("here");

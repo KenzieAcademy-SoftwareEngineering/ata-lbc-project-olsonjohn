@@ -19,8 +19,6 @@ import {useGetTickets} from "../../hooks";
 import TicketCard from "./TicketCard";
 import {NavLink} from "react-router-dom";
 
-
-
 function TicketPage() {
 
   const {data: tickets, status, setStatusFilter} = useGetTickets();
@@ -91,8 +89,6 @@ function TicketPage() {
                 </Stack>
               </Skeleton>
             </TabPanel>
-
-
           </TabPanels>
         </Tabs>
       </Box>

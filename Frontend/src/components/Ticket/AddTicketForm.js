@@ -29,7 +29,6 @@ export default function AddTicketForm(props) {
     setCustomerModalOpen(false);
   };
   
-
   const mutation = useMutation({
     mutationFn: (formData) => {
       addTicket(formData);

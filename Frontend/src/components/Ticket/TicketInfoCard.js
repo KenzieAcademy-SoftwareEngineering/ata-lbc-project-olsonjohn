@@ -197,7 +197,7 @@ deleteMutation.mutate(id)
 
                   <Center justifyContent={'flex-start'} flexDirection={'column'} gap={3}>
                     <Card variant={'outline'} borderRadius={15}>
-                      <CardHeader bgColor={'background: rgba(0, 0, 0, 0.4)'} gap={3} display={'flex'} alignItems={'center'} justifyContent={'center'}>
+                      <CardHeader bgColor={'background: rgba(0, 0, 159)'} gap={3} display={'flex'} alignItems={'center'} justifyContent={'center'}>
                         <Icon as={AiFillFileText} boxSize={35}/>
                         <Heading textDecoration="underline" fontSize='md' fontWeight='bold'>Customer Info</Heading>
                       </CardHeader>
